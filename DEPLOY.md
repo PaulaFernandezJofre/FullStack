@@ -85,7 +85,7 @@ En tu Web Service de Render, ve a **"Environment"** y agrega:
 
 | Variable | Valor |
 |----------|-------|
-| `PYTHON_VERSION` | `3.12` |
+| `PYTHON_VERSION` | `3.12.0` |
 | `DJANGO_SECRET_KEY` | `[Genera una clave segura]` |
 | `DEBUG` | `False` |
 | `ALLOWED_HOSTS` | `logicperfect.onrender.com` |
