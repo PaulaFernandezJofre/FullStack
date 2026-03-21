@@ -5,6 +5,7 @@ django-cors-headers>=4.3.0
 django-filter>=23.5
 django-phonenumber-field>=7.2.0
 phonenumbers>=8.13.0
+dj-database-url>=2.1.0
 
 psycopg2-binary>=2.9.9
 

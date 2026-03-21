@@ -106,9 +106,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'core.context_processors.cart_context',
                 'core.context_processors.site_settings',
-                'core.context_processors.social_auth_settings',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -117,8 +114,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'devstack.wsgi.application'
 
 # =============================================================================
-# BASE DE DATOS - PostgreSQL
+# BASE DE DATOS - PostgreSQL / SQLite
 # =============================================================================
+
+import dj_database_url
 
 if DEBUG:
     DATABASES = {
@@ -129,14 +128,7 @@ if DEBUG:
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'devstack_db'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'postgres'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-        }
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL', ''), conn_max_age=600)
     }
 
 # =============================================================================
