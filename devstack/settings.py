@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'django_filters',
+    'phonenumber_field',
     'crispy_forms',
     'crispy_bootstrap5',
     
