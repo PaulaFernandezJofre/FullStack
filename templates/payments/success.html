@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pago Exitoso{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow">
+                <div class="card-body text-center p-5">
+                    {% if order.status == 'completed' %}
+                    <div class="mb-4">
+                        <div class="success-checkmark">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                        </div>
+                    </div>
+                    <h1 class="h2 mb-3">¡Pago Completado!</h1>
+                    <p class="text-muted mb-4">
+                        Tu pago ha sido procesado exitosamente. Ahora puedes descargar tus productos.
+                    </p>
+                    
+                    <div class="alert alert-light border mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Número de orden:</span>
+                            <strong>{{ order.order_number }}</strong>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Total pagado:</span>
+                            <strong class="text-primary">${{ order.total }}</strong>
+                        </div>
+                    </div>
+                    
+                    <h5 class="mb-3">Productos Comprados</h5>
+                    <ul class="list-group mb-4">
+                        {% for item in order.items.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ item.product.name }}</strong>
+                                <br>
+                                <small class="text-muted">{{ item.license_type|default:"Licencia Regular" }}</small>
+                            </div>
+                            <a href="{% url 'orders:download' item.id %}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-download me-1"></i>Descargar
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    
+                    <p class="small text-muted mb-4">
+                        Se ha enviado un correo de confirmación a <strong>{{ order.user.email }}</strong> 
+                        con los enlaces de descarga.
+                    </p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'orders:my-orders' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-receipt me-2"></i>Ver Mis Compras
+                        </a>
+                        <a href="{% url 'products:product-list' %}" class="btn btn-primary">
+                            <i class="bi bi-grid me-2"></i>Seguir Comprando
+                        </a>
+                    </div>
+                    
+                    {% else %}
+                    <div class="mb-4">
+                        <i class="bi bi-hourglass-split text-warning" style="font-size: 5rem;"></i>
+                    </div>
+                    <h1 class="h2 mb-3">Pago Pendiente</h1>
+                    <p class="text-muted mb-4">
+                        Tu pago está siendo procesado. Recibirás un correo cuando sea confirmado.
+                    </p>
+                    <div class="d-grid">
+                        <a href="{% url 'products:product-list' %}" class="btn btn-primary">
+                            <i class="bi bi-house me-2"></i>Volver al Inicio
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

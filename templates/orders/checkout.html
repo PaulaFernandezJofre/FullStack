@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Finalizar Compra</h1>
+
+    <form method="post" action="{% url 'orders:checkout' %}" id="checkoutForm">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Información de Contacto</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre</label>
+                                <input type="text" name="first_name" class="form-control" required 
+                                       value="{{ user.first_name|default:'' }}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Apellido</label>
+                                <input type="text" name="last_name" class="form-control" required 
+                                       value="{{ user.last_name|default:'' }}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Correo electrónico</label>
+                                <input type="email" name="email" class="form-control" required 
+                                       value="{{ user.email|default:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Método de Pago</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="payment_method" id="mercadopago" value="mercadopago" checked>
+                                <label class="form-check-label d-flex align-items-center" for="mercadopago">
+                                    <span class="mercadopago-icon me-2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="#00B1EA"/>
+                                            <path d="M17.5 12.5c0 .83-.67 1.5-1.5 1.5H13v-3c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v3H8v-1c0-.83-.67-1.5-1.5-1.5S5 11.67 5 12.5v4c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-1h2v1c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-4c0-.83-.67-1.5-1.5-1.5h-2v-1h3c.83 0 1.5.67 1.5 1.5v1h2v-1z" fill="#00B1EA"/>
+                                        </svg>
+                                    </span>
+                                    <div>
+                                        <strong>Mercado Pago</strong>
+                                        <small class="text-muted d-block">Tarjeta, Pago en Efectivo, Transferencia, PSE</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="mercadopagoPayment" class="mt-4">
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                Serás redirigido a Mercado Pago para completar tu pago de forma segura.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 80px;">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tu Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush mb-3">
+                            {% for item in cart_items %}
+                            <li class="list-group-item px-0 d-flex justify-content-between">
+                                <span class="text-truncate me-2">{{ item.product.name }}</span>
+                                <span class="text-nowrap">${{ item.subtotal }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span>${{ subtotal }}</span>
+                        </div>
+                        
+                        {% if discount > 0 %}
+                        <div class="d-flex justify-content-between mb-2 text-success">
+                            <span>Descuento</span>
+                            <span>-${{ discount }}</span>
+                        </div>
+                        {% endif %}
+
+                        {% if chile_iva_enabled and iva_rate > 0 %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>IVA ({{ iva_rate }}% Chile)</span>
+                            <span>${{ iva }}</span>
+                        </div>
+                        {% endif %}
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong>Total</strong>
+                            <strong class="text-primary fs-5">${{ total }}</strong>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100" id="submitBtn">
+                            <span id="btnText">Completar Pedido</span>
+                            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </span>
+                        </button>
+
+                        <p class="text-muted small text-center mt-3 mb-0">
+                            Al completar tu pedido, aceptas nuestros 
+                            <a href="{% url 'core:terms' %}">Términos de Servicio</a> y 
+                            <a href="{% url 'core:privacy' %}">Política de Privacidad</a>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="bi bi-shield-check text-success"></i>
+                            <strong>Compra Segura</strong>
+                        </div>
+                        <p class="small text-muted mb-0">
+                            Tus datos están protegidos con encriptación SSL. 
+                            Ofrecemos garantía de reembolso de 30 días.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block dom_ready %}
+const paymentMethods = document.querySelectorAll('input[name="payment_method"]');
+const mercadopagoPayment = document.getElementById('mercadopagoPayment');
+
+paymentMethods.forEach(method => {
+    method.addEventListener('change', function() {
+        mercadopagoPayment.classList.add('d-none');
+        
+        if (this.value === 'mercadopago') {
+            mercadopagoPayment.classList.remove('d-none');
+        }
+    });
+});
+
+const form = document.getElementById('checkoutForm');
+const submitBtn = document.getElementById('submitBtn');
+const btnText = document.getElementById('btnText');
+const btnSpinner = document.getElementById('btnSpinner');
+
+form.addEventListener('submit', function() {
+    btnText.textContent = 'Procesando...';
+    btnSpinner.classList.remove('d-none');
+    submitBtn.disabled = true;
+});
+{% endblock %}

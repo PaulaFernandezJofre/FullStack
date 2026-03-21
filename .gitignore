@@ -1,0 +1,60 @@
+# =============================================================================
+# DevStack - Git Ignore
+# =============================================================================
+
+# Environment variables (NUNCA hacer commit de .env)
+.env
+.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+*.pot
+*.pyc
+
+# Staticfiles
+static/
+collected_static/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Secret files
+*.pem
+*.key
+secrets.json
+credentials.json
+
+# OS
+Thumbs.db

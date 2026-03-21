@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Carrito de Compras{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Carrito de Compras</h1>
+
+    {% if cart_items %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% for item in cart_items %}
+                    <div class="row align-items-center py-3 {% not forloop.last %}border-bottom{% endif %}">
+                        <div class="col-md-2">
+                            <img src="{{ item.product.thumbnail_url|default:item.product.image.url|default:'https://via.placeholder.com/100' }}" 
+                                 class="img-fluid rounded" alt="{{ item.product.name }}">
+                        </div>
+                        <div class="col-md-4">
+                            <h5 class="mb-1">
+                                <a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a>
+                            </h5>
+                            <p class="text-muted small mb-0">
+                                Vendedor: {{ item.product.seller.get_full_name|default:item.product.seller.username }}
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-select form-select-sm" data-item-id="{{ item.id }}">
+                                <option value="1" {% if item.quantity == 1 %}selected{% endif %}>1</option>
+                                <option value="2" {% if item.quantity == 2 %}selected{% endif %}>2</option>
+                                <option value="3" {% if item.quantity == 3 %}selected{% endif %}>3</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <span class="fw-bold">${{ item.subtotal }}</span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <form action="{% url 'orders:cart-remove' item.id %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <a href="{% url 'products:product-list' %}" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-2"></i>Continuar Comprando
+            </a>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 80px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Resumen del Pedido</h5>
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal ({{ cart_items|length }} productos)</span>
+                        <span>${{ subtotal }}</span>
+                    </div>
+                    
+                    {% if discount > 0 %}
+                    <div class="d-flex justify-content-between mb-2 text-success">
+                        <span>Descuento</span>
+                        <span>-${{ discount }}</span>
+                    </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-4">
+                        <strong>Total</strong>
+                        <strong class="text-primary fs-5">${{ total }}</strong>
+                    </div>
+
+                    <form method="post" action="{% url 'orders:apply-coupon' %}" class="mb-4">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="code" class="form-control" placeholder="Código de cupón">
+                            <button type="submit" class="btn btn-outline-primary">Aplicar</button>
+                        </div>
+                    </form>
+
+                    <a href="{% url 'orders:checkout' %}" class="btn btn-primary btn-lg w-100">
+                        Proceder al Pago
+                    </a>
+
+                    <div class="mt-4 text-center">
+                        <small class="text-muted">
+                            <i class="bi bi-lock me-1"></i>Pago 100% seguro con Mercado Pago
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <i class="bi bi-cart3 text-muted" style="font-size: 5rem;"></i>
+        <h2 class="mt-4">Tu carrito está vacío</h2>
+        <p class="text-muted mb-4">¡Explora nuestros productos y encuentra algo que te guste!</p>
+        <a href="{% url 'products:product-list' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-grid me-2"></i>Ver Productos
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

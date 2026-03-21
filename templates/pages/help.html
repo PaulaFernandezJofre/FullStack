@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <h2 class="mb-4">
+                    <i class="bi bi-life-preserver text-neon-cyan me-2"></i>{{ page_title }}
+                </h2>
+                
+                <div class="mb-4">
+                    <h5 class="text-neon-lime mb-3"><i class="bi bi-question-circle me-2"></i>¿Cómo podemos ayudarte?</h5>
+                    <div class="input-group mb-4">
+                        <span class="input-group-text" style="background: rgba(0, 245, 255, 0.1); border-color: rgba(0, 245, 255, 0.3);">
+                            <i class="bi bi-search text-neon-cyan"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Busca en nuestra ayuda..." 
+                               style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="help-card">
+                            <i class="bi bi-box-seam text-neon-lime mb-2"></i>
+                            <h6>Vender en LogicPerfect</h6>
+                            <p class="text-muted small mb-0">Aprende cómo publicar tus productos y gestionar tus ventas.</p>
+                            <a href="/faq/" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="help-card">
+                            <i class="bi bi-bag-check text-neon-cyan mb-2"></i>
+                            <h6>Comprar Productos</h6>
+                            <p class="text-muted small mb-0">Guía para compradores: cómo comprar y descargar productos.</p>
+                            <a href="/faq/" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="help-card">
+                            <i class="bi bi-credit-card text-neon-yellow mb-2"></i>
+                            <h6>Pagos y Retiros</h6>
+                            <p class="text-muted small mb-0">Información sobre métodos de pago y retiros de ganancias.</p>
+                            <a href="/faq/" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="help-card">
+                            <i class="bi bi-shield-check text-neon-magenta mb-2"></i>
+                            <h6>Cuenta y Seguridad</h6>
+                            <p class="text-muted small mb-0">Gestiona tu cuenta, contraseñas y configuración de seguridad.</p>
+                            <a href="/faq/" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+                
+                <div class="text-center">
+                    <p class="text-muted mb-3">¿No encontraste lo que buscabas?</p>
+                    <a href="/contact/" class="btn btn-neon-cyan">
+                        <i class="bi bi-envelope me-2"></i>Contactar Soporte
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.help-card {
+    background: rgba(10, 10, 15, 0.5);
+    border: 1px solid rgba(0, 245, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+.help-card:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
+}
+.help-card i {
+    font-size: 2rem;
+}
+</style>
+{% endblock %}

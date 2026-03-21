@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Registro - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-card animate-fade-in-up">
+        <div class="logo">
+            <i class="bi bi-lightning-charge"></i>Logic<span>Perfect</span>
+        </div>
+        
+        <h4 class="text-center mb-2">Crea tu cuenta</h4>
+        <p class="subtitle">Únete a miles de desarrolladores</p>
+        
+        {% if form.errors %}
+        <div class="alert alert-danger mb-3">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <form method="POST" action="{% url 'register' %}">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="first_name" class="form-label">Nombre</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input type="text" class="form-control" id="first_name" name="first_name" 
+                               placeholder="Tu nombre" required>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="last_name" class="form-label">Apellido</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input type="text" class="form-control" id="last_name" name="last_name" 
+                               placeholder="Tu apellido" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control" id="email" name="email" 
+                           placeholder="tu@email.com" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="password1" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password1" name="password1" 
+                           placeholder="Mínimo 8 caracteres" required>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label for="password2" class="form-label">Confirmar Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-lock-fill"></i>
+                    </span>
+                    <input type="password" class="form-control" id="password2" name="password2" 
+                           placeholder="Repite tu contraseña" required>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label">Tipo de cuenta</label>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-neon-cyan" id="btn-buyer" onclick="selectRole('buyer')">
+                        <i class="bi bi-cart-check me-2"></i>Quiero Comprar
+                    </button>
+                    <button type="button" class="btn btn-neon-lime" id="btn-seller" onclick="selectRole('seller')">
+                        <i class="bi bi-shop me-2"></i>Quiero Vender
+                    </button>
+                </div>
+                <input type="hidden" name="role" id="roleInput" value="buyer">
+            </div>
+            
+            <div class="form-check mb-4">
+                <input type="checkbox" class="form-check-input" id="terms" required>
+                <label class="form-check-label" for="terms">
+                    Acepto los <a href="/terms/">Términos de Servicio</a> y 
+                    <a href="/privacy/">Política de Privacidad</a>
+                </label>
+            </div>
+            
+            <button type="submit" class="btn btn-filled-magenta w-100 mb-3">
+                <i class="bi bi-person-plus me-2"></i>Crear Cuenta
+            </button>
+        </form>
+        
+        <p class="text-center">
+            ¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a>
+        </p>
+    </div>
+</div>
+
+<script>
+function selectRole(role) {
+    document.getElementById('roleInput').value = role;
+    
+    const btnBuyer = document.getElementById('btn-buyer');
+    const btnSeller = document.getElementById('btn-seller');
+    
+    if (role === 'buyer') {
+        btnBuyer.classList.add('btn-filled-cyan');
+        btnBuyer.classList.remove('btn-neon-cyan');
+        btnSeller.classList.remove('btn-filled-lime');
+        btnSeller.classList.add('btn-neon-lime');
+    } else {
+        btnSeller.classList.add('btn-filled-lime');
+        btnSeller.classList.remove('btn-neon-lime');
+        btnBuyer.classList.remove('btn-filled-cyan');
+        btnBuyer.classList.add('btn-neon-cyan');
+    }
+}
+
+// Initialize buyer as selected
+selectRole('buyer');
+</script>
+{% endblock %}

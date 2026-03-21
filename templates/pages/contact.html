@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - DevStack{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <h2 class="mb-4">
+                    <i class="bi bi-envelope text-neon-cyan me-2"></i>{{ page_title }}
+                </h2>
+                
+                <p class="text-muted mb-4">¿Tienes alguna pregunta o necesitas ayuda? Contáctanos y te responderemos lo antes posible.</p>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control" name="name" required
+                                   style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" name="email" required
+                                   style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Asunto</label>
+                            <select class="form-select" name="subject" required
+                                    style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
+                                <option value="">Selecciona una opción</option>
+                                <option value="soporte">Soporte Técnico</option>
+                                <option value="ventas">Ventas</option>
+                                <option value="pagos">Problemas de Pago</option>
+                                <option value="reportar">Reportar un Problema</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Mensaje</label>
+                            <textarea class="form-control" name="message" rows="5" required
+                                      placeholder="Escribe tu mensaje aquí..."
+                                      style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-filled-cyan">
+                                <i class="bi bi-send me-2"></i>Enviar Mensaje
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="dashboard-card mb-4">
+                <h5 class="mb-3"><i class="bi bi-shield-check text-neon-lime me-2"></i>Contacto Directo</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="bi bi-envelope text-neon-cyan me-2"></i>
+                        <span class="text-muted">soporte@logicperfect.com</span>
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-clock text-neon-yellow me-2"></i>
+                        <span class="text-muted">Lun - Vie: 9:00 - 18:00</span>
+                    </li>
+                    <li class="mb-0">
+                        <i class="bi bi-geo-alt text-neon-magenta me-2"></i>
+                        <span class="text-muted">Santiago, Chile</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="dashboard-card">
+                <h5 class="mb-3"><i class="bi bi-lightning text-neon-yellow me-2"></i>Respuesta Rápida</h5>
+                <p class="text-muted small">La mayoría de preguntas se responden en menos de 24 horas.</p>
+                <a href="/faq/" class="btn btn-neon-lime w-100">
+                    <i class="bi bi-question-circle me-2"></i>Ver FAQ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

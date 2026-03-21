@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Retirar Ganancias - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 px-4">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-12 col-md-3 col-lg-2 mb-4">
+            <div class="dashboard-sidebar-card">
+                <div class="text-center mb-4 pt-3">
+                    <div class="avatar mx-auto">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <h6 class="mt-3 mb-1">{{ user.get_full_name|default:user.email|slice:":15" }}</h6>
+                    <span class="role-badge seller">
+                        <i class="bi bi-shop me-1"></i>Vendedor
+                    </span>
+                </div>
+                
+                <ul class="nav flex-column px-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/dashboard/">
+                            <i class="bi bi-speedometer2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/my-products/">
+                            <i class="bi bi-box-seam"></i>Mis Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/account/withdraw/">
+                            <i class="bi bi-wallet2"></i>Retiros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/profile/">
+                            <i class="bi bi-gear"></i>Configuración
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account/logout/">
+                            <i class="bi bi-box-arrow-right"></i>Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-12 col-md-9 col-lg-10">
+            <div class="mb-4">
+                <h2 class="mb-2">
+                    <i class="bi bi-wallet2 text-neon-lime me-2"></i>Retirar Ganancias
+                </h2>
+                <p class="text-muted mb-0">Solicita el retiro de tus ganancias a tu cuenta de Mercado Pago</p>
+            </div>
+            
+            <!-- Balance Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-4">
+                    <div class="stat-card lime h-100">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">Disponible</p>
+                                <h3 class="mb-0">${{ available_earnings|default:"0.00" }}</h3>
+                            </div>
+                            <div class="icon lime"><i class="bi bi-piggy-bank"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="stat-card cyan h-100">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">En Proceso</p>
+                                <h3 class="mb-0">${{ pending_earnings|default:"0.00" }}</h3>
+                            </div>
+                            <div class="icon cyan"><i class="bi bi-hourglass-split"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-4">
+                    <div class="stat-card magenta h-100">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-muted mb-1 small">Total Retirado</p>
+                                <h3 class="mb-0">${{ total_paid_out|default:"0.00" }}</h3>
+                            </div>
+                            <div class="icon magenta"><i class="bi bi-check-circle"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row g-3">
+                <div class="col-lg-7">
+                    <div class="dashboard-card">
+                        <h5 class="mb-3"><i class="bi bi-currency-dollar text-neon-cyan me-2"></i>Solicitar Retiro</h5>
+                        
+                        <form method="POST" action="/account/withdraw/" class="mt-3">
+                            {% csrf_token %}
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Monto a Retirar</label>
+                                <div class="input-group">
+                                    <span class="input-group-text" style="background: rgba(57, 255, 20, 0.1); border-color: rgba(57, 255, 20, 0.3); color: var(--neon-lime);">$</span>
+                                    <input type="number" class="form-control" name="amount" 
+                                           placeholder="0.00" step="0.01" min="1"
+                                           style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
+                                </div>
+                                <small class="text-muted">Monto mínimo: $50.00</small>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Correo de Mercado Pago</label>
+                                <input type="email" class="form-control" name="mercadopago_email" 
+                                       placeholder="tu-correo@mercadopago.com" value="{{ user.email }}"
+                                       style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
+                            </div>
+                            
+                            <div class="alert alert-warning mb-3">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <small>Las solicitudes son procesadas en 24-48 horas hábiles.</small>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-filled-lime w-100">
+                                <i class="bi bi-send me-2"></i>Solicitar Retiro
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="col-lg-5">
+                    <div class="dashboard-card mb-3">
+                        <h5 class="mb-3"><i class="bi bi-clock-history text-neon-yellow me-2"></i>Historial</h5>
+                        
+                        {% if payouts %}
+                        <div class="mt-2">
+                            {% for payout in payouts %}
+                            <div class="d-flex justify-content-between align-items-center py-2 border-bottom" style="border-color: rgba(255,255,255,0.1) !important;">
+                                <div>
+                                    <strong class="small">#{{ payout.payout_number|slice:":12" }}</strong>
+                                    <p class="mb-0 text-muted small">{{ payout.requested_at|date:"d M Y" }}</p>
+                                </div>
+                                <div class="text-end">
+                                    <strong>${{ payout.amount }}</strong>
+                                    {% if payout.status == 'completed' %}
+                                    <span class="badge badge-success ms-1">OK</span>
+                                    {% elif payout.status == 'pending' %}
+                                    <span class="badge badge-warning ms-1">PEN</span>
+                                    {% else %}
+                                    <span class="badge badge-info ms-1">{{ payout.status|slice:":3" }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="text-center py-3">
+                            <i class="bi bi-inbox text-muted" style="font-size: 2rem;"></i>
+                            <p class="text-muted mt-2 small mb-0">Sin retiros</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="dashboard-card">
+                        <h5 class="mb-3"><i class="bi bi-info-circle text-neon-cyan me-2"></i>Información</h5>
+                        <ul class="list-unstyled mb-0 small">
+                            <li class="mb-2"><i class="bi bi-check-circle text-neon-lime me-2"></i>Mínimo: $50.00</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-neon-lime me-2"></i>Procesamiento: 24-48h</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-neon-lime me-2"></i>Comisión: 1%</li>
+                            <li class="mb-0"><i class="bi bi-check-circle text-neon-lime me-2"></i>Mercado Pago</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

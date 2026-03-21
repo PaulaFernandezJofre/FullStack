@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - DevStack{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <h2 class="mb-4">
+                    <i class="bi bi-shield-lock text-neon-cyan me-2"></i>{{ page_title }}
+                </h2>
+                
+                <p class="text-muted mb-4">Última actualización: Marzo 2026</p>
+                
+                <h5 class="text-neon-lime mb-3">1. Información que Recopilamos</h5>
+                <p class="text-secondary mb-4">
+                    Recopilamos información que nos proporcionas directamente, incluyendo nombre, correo electrónico, y datos de pago. También recopilamos información técnica como tu dirección IP, tipo de navegador y comportamiento de navegación.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">2. Uso de la Información</h5>
+                <p class="text-secondary mb-4">
+                    Utilizamos tu información para procesar pagos, gestionar tu cuenta, enviarte notificaciones importantes, mejorar nuestros servicios y mostrarte contenido relevante. Nunca vendemos tus datos personales a terceros.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">3. Protección de Datos</h5>
+                <p class="text-secondary mb-4">
+                    Implementamos medidas de seguridad técnicas y organizativas para proteger tus datos. Utilizamos encriptación SSL, firewalls, y acceso restringido a la información personal.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">4. Cookies</h5>
+                <p class="text-secondary mb-4">
+                    Utilizamos cookies para mejorar tu experiencia en el sitio, recordar tus preferencias y analizar el tráfico. Puedes configurar tu navegador para rechazar cookies, aunque esto podría afectar algunas funcionalidades.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">5. Compartir Información</h5>
+                <p class="text-secondary mb-4">
+                    Compartimos información con Mercado Pago para procesar pagos, con proveedores de servicios que nos ayudan a operar el sitio, y cuando sea requerido por ley. No compartimos datos con fines de marketing sin tu consentimiento.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">6. Tus Derechos</h5>
+                <p class="text-secondary mb-4">
+                    Tienes derecho a acceder, corregir o eliminar tus datos personales. También puedes solicitar la portabilidad de tus datos o restringir su procesamiento. Contacta soporte@logicperfect.com para ejercer estos derechos.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">7. Retención de Datos</h5>
+                <p class="text-secondary mb-4">
+                    Conservamos tus datos mientras tu cuenta esté activa o sea necesario para提供服务. Los datos de transacciones se mantienen según los requisitos legales de Chile.
+                </p>
+                
+                <h5 class="text-neon-lime mb-3">8. Contacto</h5>
+                <p class="text-secondary">
+                    Si tienes preguntas sobre esta política de privacidad, contacta a nuestro Oficial de Protección de Datos en <strong>soporte@logicperfect.com</strong> o en <strong>Santiago, Chile</strong>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

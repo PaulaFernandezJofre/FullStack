@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}LogicPerfect - Marketplace de Proyectos de Programación{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="animate-fade-in-up">Tu marketplace para proyectos de <span class="highlight">programación</span></h1>
+                <p class="lead animate-fade-in-up" style="animation-delay: 0.2s;">
+                    Compra y vende software, templates, cursos, apps y más. Encuentra proyectos de alta calidad desarrollados por expertos.
+                </p>
+                <div class="animate-fade-in-up" style="animation-delay: 0.4s;">
+                    <a href="/products/" class="btn btn-filled-cyan btn-lg me-3">
+                        <i class="bi bi-bag-check me-2"></i>Explorar Productos
+                    </a>
+                    <a href="/account/register/" class="btn btn-neon-magenta btn-lg">
+                        <i class="bi bi-rocket-takeoff me-2"></i>Comenzar a Vender
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                <div class="code-window animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="code-window-header">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <pre style="color: #e0e0e0;"><code><span style="color: #ff79c6;">def</span> <span style="color: #50fa7b;">get_premium_project</span>():
+    <span style="color: #6272a4;"># Encuentra proyectos de calidad</span>
+    project = Project.objects.<span style="color: #50fa7b;">filter</span>(
+        rating=<span style="color: #bd93f9;">5</span>,
+        verified=<span style="color: #ff79c6;">True</span>
+    )
+    <span style="color: #ff79c6;">return</span> project.first()
+
+<span style="color: #6272a4;"># LogicPerfect - Calidad garantizada</span>
+<span style="color: #6272a4;"># 85% para vendedores | 15% plataforma</span>
+<span style="color: #6272a4;"># +19% IVA Chile</span></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="section-title">
+            <i class="bi bi-grid-3x3-gap text-neon-cyan"></i>
+            <h2>Categorías</h2>
+            <p>Explora proyectos por categoría</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="/products/?type=software" class="text-decoration-none">
+                    <div class="category-card software">
+                        <i class="bi bi-code-slash"></i>
+                        <h5>Software</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="/products/?type=template" class="text-decoration-none">
+                    <div class="category-card template">
+                        <i class="bi bi-layout-text-window"></i>
+                        <h5>Templates</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="/products/?type=course" class="text-decoration-none">
+                    <div class="category-card course">
+                        <i class="bi bi-play-circle"></i>
+                        <h5>Cursos</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="/products/?type=app" class="text-decoration-none">
+                    <div class="category-card app">
+                        <i class="bi bi-phone"></i>
+                        <h5>Apps</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="/products/?type=website" class="text-decoration-none">
+                    <div class="category-card" style="border-color: rgba(255, 107, 0, 0.3);">
+                        <i class="bi bi-globe" style="color: #ff6b00;"></i>
+                        <h5>Websites</h5>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2">
+                <a href="/products/" class="text-decoration-none">
+                    <div class="category-card" style="border-color: rgba(0, 128, 255, 0.3);">
+                        <i class="bi bi-three-dots" style="color: #0080ff;"></i>
+                        <h5>Más</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5" style="background: var(--bg-card);">
+    <div class="container">
+        <div class="section-title">
+            <i class="bi bi-lightning-charge text-neon-yellow"></i>
+            <h2>¿Por qué elegir LogicPerfect?</h2>
+            <p>La mejor plataforma para comprar y vender proyectos de programación</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="icon-circle cyan mx-auto mb-4">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <h5 class="mb-3">Proyectos Verificados</h5>
+                        <p class="text-muted mb-0">Todos los productos son revisados para garantizar calidad y funcionamiento</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="icon-circle lime mx-auto mb-4">
+                            <i class="bi bi-credit-card"></i>
+                        </div>
+                        <h5 class="mb-3">Pago Seguro</h5>
+                        <p class="text-muted mb-0">Mercado Pago protege tus transacciones con la mejor seguridad</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="icon-circle magenta mx-auto mb-4">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <h5 class="mb-3">Soporte 24/7</h5>
+                        <p class="text-muted mb-0">Equipo de soporte listo para ayudarte en cualquier momento</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-5 stats-section">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-6 col-md-3 mb-4 mb-md-0">
+                <h2>10K+</h2>
+                <p>Proyectos</p>
+            </div>
+            <div class="col-6 col-md-3 mb-4 mb-md-0">
+                <h2>5K+</h2>
+                <p>Vendedores</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2>50K+</h2>
+                <p>Compradores</p>
+            </div>
+            <div class="col-6 col-md-3">
+                <h2>4.9</h2>
+                <p>Calificación</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="cta-section p-5">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mb-4 mb-lg-0">
+                    <h2 class="mb-3"><i class="bi bi-rocket-takeoff text-neon-cyan me-2"></i>¿Listo para comenzar?</h2>
+                    <p class="text-muted mb-0">Únete a miles de desarrolladores que ya están vendiendo sus proyectos en LogicPerfect.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a href="/account/register/" class="btn btn-filled-magenta btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Crear Cuenta Gratis
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-5">
+            <h5 class="mb-4"><i class="bi bi-share text-neon-cyan me-2"></i>Comparte LogicPerfect con tus amigos</h5>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=¡Mira%20esta%20increíble%20plataforma%20de%20proyectos%20de%20programación!%20LogicPerfect%20-%20Compra%20y%20vende%20software,%20templates,%20cursos%20y%20más" target="_blank" class="btn" style="background: #1DA1F2; color: white; padding: 10px 25px;">
+                    <i class="bi bi-twitter-x me-2"></i>Twitter
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" class="btn" style="background: #4267B2; color: white; padding: 10px 25px;">
+                    <i class="bi bi-facebook me-2"></i>Facebook
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?url={{ request.build_absolute_uri }}&title=LogicPerfect%20-%20Marketplace%20de%20Proyectos%20de%20Programación&summary=La%20mejor%20plataforma%20para%20comprar%20y%20vender%20proyectos%20de%20programación" target="_blank" class="btn" style="background: #0077B5; color: white; padding: 10px 25px;">
+                    <i class="bi bi-linkedin me-2"></i>LinkedIn
+                </a>
+                <a href="https://wa.me/?text=¡Mira%20esta%20increíble%20plataforma%20de%20proyectos%20de%20programación!%20LogicPerfect%20-%20Compra%20y%20vende%20software,%20templates,%20cursos%20y%20más%20{{ request.build_absolute_uri }}" target="_blank" class="btn" style="background: #25D366; color: white; padding: 10px 25px;">
+                    <i class="bi bi-whatsapp me-2"></i>WhatsApp
+                </a>
+                <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=¡Mira%20esta%20increíble%20plataforma%20de%20proyectos%20de%20programación!%20LogicPerfect" target="_blank" class="btn" style="background: #0088cc; color: white; padding: 10px 25px;">
+                    <i class="bi bi-telegram me-2"></i>Telegram
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

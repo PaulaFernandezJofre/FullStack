@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="dashboard-card">
+                <h2 class="mb-4">
+                    <i class="bi bi-award text-neon-cyan me-2"></i>{{ page_title }}
+                </h2>
+                
+                <p class="text-muted mb-4">
+                    En LogicPerfect respetamos los derechos de propiedad intelectual. Cada producto tiene su propia licencia definida por el vendedor.
+                </p>
+                
+                <div class="license-card mb-4">
+                    <h5 class="text-neon-lime mb-3"><i class="bi bi-check-circle me-2"></i>Licencia Regular</h5>
+                    <p class="text-secondary mb-2">Incluida con la compra estándar de cualquier producto.</p>
+                    <ul class="text-secondary small">
+                        <li>Uso en un proyecto personal o comercial</li>
+                        <li>Modificación y personalización permitida</li>
+                        <li>Sin límite de tiempo</li>
+                        <li>Sin derecho a reventa o redistribución</li>
+                    </ul>
+                </div>
+                
+                <div class="license-card mb-4">
+                    <h5 class="text-neon-yellow mb-3"><i class="bi bi-star me-2"></i>Licencia Extendida</h5>
+                    <p class="text-secondary mb-2">Disponible para clientes que necesitan uso comercial ampliado.</p>
+                    <ul class="text-secondary small">
+                        <li>Uso en múltiples proyectos comerciales</li>
+                        <li>Uso en proyectos de cliente (freelance)</li>
+                        <li>Reventa como parte de un producto mayor</li>
+                        <li>Soporte prioritario del vendedor</li>
+                    </ul>
+                    <p class="text-muted small mt-2 mb-0">Precio determinado por cada vendedor.</p>
+                </div>
+                
+                <div class="license-card mb-4">
+                    <h5 class="text-neon-cyan mb-3"><i class="bi bi-building me-2"></i>Licencia Comercial</h5>
+                    <p class="text-secondary mb-2">Para empresas que necesitan derechos de uso amplios.</p>
+                    <ul class="text-secondary small">
+                        <li>Uso ilimitado en proyectos propios</li>
+                        <li>Derecho a sublicenciar</li>
+                        <li>Uso en productos OEM o bundling</li>
+                        <li>Soporte dedicado y actualizaciones</li>
+                    </ul>
+                    <p class="text-muted small mt-2 mb-0">Contacta al vendedor para negociar términos.</p>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    <strong>Importante:</strong> Los derechos de autor del código original permanecen con el vendedor. Solo se otorga licencia de uso, no propiedad del código.
+                </div>
+                
+                <h5 class="text-neon-lime mb-3 mt-4">Derechos del Comprador</h5>
+                <ul class="text-secondary">
+                    <li>Acceso permanente a los archivos descargados</li>
+                    <li>Recibir actualizaciones publicadas durante 1 año</li>
+                    <li>Soporte técnico básico del vendedor</li>
+                    <li>Acceso a documentación incluida</li>
+                </ul>
+                
+                <h5 class="text-neon-lime mb-3 mt-4">Lo que NO está permitido</h5>
+                <ul class="text-secondary">
+                    <li>Redistribuir o revender los archivos originales</li>
+                    <li>Publicar el código en repositorios públicos</li>
+                    <li>Utilizar el producto para actividades ilegales</li>
+                    <li>Eliminar créditos o atribuciones del autor</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.license-card {
+    background: rgba(10, 10, 15, 0.5);
+    border: 1px solid rgba(0, 245, 255, 0.2);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+</style>
+{% endblock %}
