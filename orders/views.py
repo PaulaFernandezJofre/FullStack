@@ -12,7 +12,7 @@ from django.views import View
 
 from .models import Cart, CartItem, Order, OrderItem, ProductDownload, Coupon, Refund
 from .serializers import (
-    CartSerializer, CartItemSerializer, OrderSerializer, OrderDetailSerializer, CheckoutSerializer,
+    CartSerializer, CartItemSerializer, CartAddItemSerializer, OrderSerializer, OrderDetailSerializer, CheckoutSerializer,
     DownloadSerializer, CouponSerializer, RefundSerializer, RefundCreateSerializer
 )
 
@@ -25,7 +25,9 @@ class CheckoutTemplateView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             from django.shortcuts import redirect
-            return redirect('account:login') + '?next=' + request.path
+            login_url = redirect('account:login')
+            login_url['Location'] += '?next=' + request.path
+            return login_url
         
         cart, _ = Cart.objects.get_or_create(user=request.user)
         cart_items = cart.items.select_related('product').all()
