@@ -64,9 +64,6 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'crispy_bootstrap5',
-    'django_celery_beat',
-    'django_admin_row_actions',
-    'social_django',
     
     # Local apps
     'users',
