@@ -249,33 +249,11 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'LogicPerfect <noreply@devstack.com>')
 
 # =============================================================================
-# ALMACENAMIENTO - Cloudinary (Gratuito)
+# ALMACENAMIENTO - Archivos locales
 # =============================================================================
 
-USE_CLOUDINARY = os.getenv('USE_CLOUDINARY', 'True') == 'True'
-
-if USE_CLOUDINARY:
-    import cloudinary
-    import cloudinary.uploader
-    import cloudinary.api
-    
-    CLOUDINARY_CLOUD_NAME = os.getenv('CLOUDINARY_CLOUD_NAME', '')
-    CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY', '')
-    CLOUDINARY_API_SECRET = os.getenv('CLOUDINARY_API_SECRET', '')
-    
-    cloudinary.config(
-        cloud_name=CLOUDINARY_CLOUD_NAME,
-        api_key=CLOUDINARY_API_KEY,
-        api_secret=CLOUDINARY_API_SECRET,
-        secure=True
-    )
-    
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
-else:
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
