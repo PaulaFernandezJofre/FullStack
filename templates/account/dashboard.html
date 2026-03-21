@@ -4,10 +4,10 @@
 {% block title %}Dashboard - LogicPerfect{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4 px-4">
-    <div class="row">
+<div class="container py-4">
+    <div class="row g-4">
         <!-- Sidebar -->
-        <div class="col-12 col-md-3 col-lg-2 mb-4">
+        <div class="col-12 col-lg-3">
             <div class="dashboard-sidebar-card">
                 <div class="text-center mb-4 pt-3">
                     <div class="avatar mx-auto">
@@ -73,15 +73,15 @@
         </div>
         
         <!-- Main Content -->
-        <div class="col-12 col-md-9 col-lg-10">
+        <div class="col-12 col-lg-9">
             <div class="welcome-section mb-4">
                 <h2 class="mb-2">
                     {% if is_admin %}
                         <i class="bi bi-shield-fill text-neon-cyan me-2"></i>Panel de Administración
                     {% elif is_seller %}
-                        <i class="bi bi-shop text-neon-lime me-2"></i>Panel de Vendedor
+                        <i class="bi bi-shop text-neon-green me-2"></i>Panel de Vendedor
                     {% else %}
-                        <i class="bi bi-cart-check text-neon-magenta me-2"></i>Mi Cuenta
+                        <i class="bi bi-cart-check text-neon-blue me-2"></i>Mi Cuenta
                     {% endif %}
                 </h2>
                 <p class="text-muted mb-0">Bienvenido, {{ user.first_name|default:user.email }}</p>
@@ -124,13 +124,13 @@
                     </div>
                 </div>
                 <div class="col-6 col-md-3">
-                    <div class="stat-card magenta h-100">
+                    <div class="stat-card blue h-100">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <p class="text-muted mb-1 small">Comisiones</p>
                                 <h3 class="mb-0">$6.8K</h3>
                             </div>
-                            <div class="icon magenta"><i class="bi bi-percent"></i></div>
+                            <div class="icon blue"><i class="bi bi-percent"></i></div>
                         </div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
                             <span class="text-muted ms-auto small">$12,500</span>
                         </div>
                         <div class="d-flex align-items-center">
-                            <span class="badge me-3" style="background: var(--gradient-neon-magenta); color: var(--bg-dark); width:24px;height:24px;border-radius:50%;line-height:24px;font-size:12px;">2</span>
+                            <span class="badge me-3" style="background: var(--gradient-neon-green); color: white; width:24px;height:24px;border-radius:50%;line-height:24px;font-size:12px;">2</span>
                             <strong>CodePro</strong>
                             <span class="text-muted ms-auto small">$8,200</span>
                         </div>
@@ -232,7 +232,7 @@
                             <a href="/account/withdraw/" class="btn btn-filled-lime">
                                 <i class="bi bi-wallet2 me-2"></i>Retirar Ganancias
                             </a>
-                            <a href="/account/my-products/" class="btn btn-neon-magenta">
+                            <a href="/account/my-products/" class="btn btn-neon-blue">
                                 <i class="bi bi-bar-chart me-2"></i>Ver Productos
                             </a>
                         </div>
@@ -298,7 +298,7 @@
                             <a href="/products/" class="btn btn-filled-cyan">
                                 <i class="bi bi-search me-2"></i>Explorar Productos
                             </a>
-                            <a href="/account/purchases/" class="btn btn-neon-magenta">
+                            <a href="/account/purchases/" class="btn btn-neon-blue">
                                 <i class="bi bi-bag me-2"></i>Mis Compras
                             </a>
                             <a href="/account/favorites/" class="btn btn-neon-yellow">
@@ -328,7 +328,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <p class="mb-2"><i class="bi bi-envelope text-neon-cyan me-2"></i>{{ user.email }}</p>
-                        <p class="mb-0"><i class="bi bi-calendar text-neon-magenta me-2"></i>Miembro desde {{ user.date_joined|date:"d M Y" }}</p>
+                        <p class="mb-0"><i class="bi bi-calendar text-neon-blue me-2"></i>Miembro desde {{ user.date_joined|date:"d M Y" }}</p>
                     </div>
                     <div class="col-md-6 text-md-end">
                         <a href="/account/profile/" class="btn btn-neon-cyan">
