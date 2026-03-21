@@ -89,7 +89,7 @@
                     <button type="button" class="btn btn-neon-cyan" id="btn-buyer" onclick="selectRole('buyer')">
                         <i class="bi bi-cart-check me-2"></i>Quiero Comprar
                     </button>
-                    <button type="button" class="btn btn-neon-lime" id="btn-seller" onclick="selectRole('seller')">
+                    <button type="button" class="btn btn-neon-green" id="btn-seller" onclick="selectRole('seller')">
                         <i class="bi bi-shop me-2"></i>Quiero Vender
                     </button>
                 </div>
@@ -104,7 +104,7 @@
                 </label>
             </div>
             
-            <button type="submit" class="btn btn-filled-magenta w-100 mb-3">
+            <button type="submit" class="btn btn-filled-cyan w-100 mb-3">
                 <i class="bi bi-person-plus me-2"></i>Crear Cuenta
             </button>
         </form>
@@ -125,11 +125,11 @@ function selectRole(role) {
     if (role === 'buyer') {
         btnBuyer.classList.add('btn-filled-cyan');
         btnBuyer.classList.remove('btn-neon-cyan');
-        btnSeller.classList.remove('btn-filled-lime');
-        btnSeller.classList.add('btn-neon-lime');
+        btnSeller.classList.remove('btn-filled-green');
+        btnSeller.classList.add('btn-neon-green');
     } else {
-        btnSeller.classList.add('btn-filled-lime');
-        btnSeller.classList.remove('btn-neon-lime');
+        btnSeller.classList.add('btn-filled-green');
+        btnSeller.classList.remove('btn-neon-green');
         btnBuyer.classList.remove('btn-filled-cyan');
         btnBuyer.classList.add('btn-neon-cyan');
     }
