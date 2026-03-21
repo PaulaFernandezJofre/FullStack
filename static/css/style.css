@@ -35,6 +35,11 @@
     --neon-green-soft: rgba(61, 220, 132, 0.1);
     --neon-green-glow: rgba(61, 220, 132, 0.3);
     
+    --neon-yellow: #a8e6cf;
+    --neon-yellow-light: #c4f0de;
+    --neon-yellow-soft: rgba(168, 230, 207, 0.1);
+    --neon-yellow-glow: rgba(168, 230, 207, 0.3);
+    
     --neon-gray: #8b9eb0;
     --neon-gray-soft: rgba(139, 158, 176, 0.1);
     
@@ -108,43 +113,34 @@ main {
     color: var(--text-inverse);
 }
 
-/* Brand Logo */
+/* Brand Logo - Blue, Green, Yellow */
 .navbar-brand i {
-    color: var(--neon-blue);
-    filter: drop-shadow(0 0 8px var(--neon-blue-glow));
+    color: var(--neon-cyan);
+    filter: drop-shadow(0 0 8px var(--neon-cyan-glow));
 }
 
-.brand-logic {
-    color: var(--neon-blue);
-}
+.navbar-brand .brand-l { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
+.navbar-brand .brand-o { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
+.navbar-brand .brand-g { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
+.navbar-brand .brand-i { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
+.navbar-brand .brand-c { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
+.navbar-brand .brand-p1 { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
+.navbar-brand .brand-e { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
+.navbar-brand .brand-r { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
+.navbar-brand .brand-f { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
+.navbar-brand .brand-e2 { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
+.navbar-brand .brand-c2 { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
+.navbar-brand .brand-t { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
 
-.brand-perfect {
-    color: var(--neon-green);
-}
+/* Footer Logo */
+.footer .brand-l, .footer .brand-i, .footer .brand-e, .footer .brand-e2 { color: var(--neon-blue); }
+.footer .brand-o, .footer .brand-c, .footer .brand-r, .footer .brand-c2 { color: var(--neon-green); }
+.footer .brand-g, .footer .brand-p1, .footer .brand-f, .footer .brand-t { color: var(--neon-yellow); }
 
-.navbar-brand .brand-logic {
-    text-shadow: 0 0 20px var(--neon-blue-glow);
-}
-
-.navbar-brand .brand-perfect {
-    text-shadow: 0 0 20px var(--neon-green-glow);
-}
-
-.footer .brand-logic {
-    color: var(--neon-blue);
-}
-
-.footer .brand-perfect {
-    color: var(--neon-green);
-}
-
-.auth-card .brand-logic {
-    color: var(--neon-blue);
-}
-
-.auth-card .brand-perfect {
-    color: var(--neon-green);
-}
+/* Auth Card Logo */
+.auth-card .brand-l, .auth-card .brand-i, .auth-card .brand-e, .auth-card .brand-e2 { color: var(--neon-blue); }
+.auth-card .brand-o, .auth-card .brand-c, .auth-card .brand-r, .auth-card .brand-c2 { color: var(--neon-green); }
+.auth-card .brand-g, .auth-card .brand-p1, .auth-card .brand-f, .auth-card .brand-t { color: var(--neon-yellow); }
 
 /* Links sin color con sombra neón verde sobria */
 .footer a:not([class*="text-neon"]):not([class*="text-"]),
