@@ -64,7 +64,7 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-filled-cyan">Aplicar Filtros</button>
-                            <a href="/products/" class="btn btn-neon-magenta">Limpiar</a>
+                            <a href="/products/" class="btn btn-neon-blue">Limpiar</a>
                         </div>
                     </form>
                 </div>
@@ -125,41 +125,9 @@
                                         {% endif %}
                                     </div>
                                     <div class="d-flex gap-1">
-                                        <button class="btn btn-sm btn-neon-lime" title="Agregar al carrito">
+                                        <button class="btn btn-sm btn-neon-green" title="Agregar al carrito">
                                             <i class="bi bi-cart-plus"></i>
                                         </button>
-                                        <div class="dropdown">
-                                            <button class="btn btn-sm" style="background: rgba(0, 245, 255, 0.2); color: var(--neon-cyan);" type="button" data-bs-toggle="dropdown" title="Compartir">
-                                                <i class="bi bi-share"></i>
-                                            </button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <a class="dropdown-item" href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}products/{{ product.slug }}/&text=¡Mira%20este%20increíble%20proyecto!%20{{ product.name }}%20en%20LogicPerfect" target="_blank">
-                                                        <i class="bi bi-twitter-x me-2"></i>Twitter
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}products/{{ product.slug }}/" target="_blank">
-                                                        <i class="bi bi-facebook me-2"></i>Facebook
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="https://www.linkedin.com/shareArticle?url={{ request.build_absolute_uri }}products/{{ product.slug }}/&title={{ product.name }}&summary=Mira%20este%20increíble%20proyecto%20en%20LogicPerfect" target="_blank">
-                                                        <i class="bi bi-linkedin me-2"></i>LinkedIn
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="https://wa.me/?text=¡Mira%20este%20increíble%20proyecto!%20{{ product.name }}%20{{ request.build_absolute_uri }}products/{{ product.slug }}/" target="_blank">
-                                                        <i class="bi bi-whatsapp me-2"></i>WhatsApp
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="https://t.me/share/url?url={{ request.build_absolute_uri }}products/{{ product.slug }}/&text=¡Mira%20este%20increíble%20proyecto!%20{{ product.name }}" target="_blank">
-                                                        <i class="bi bi-telegram me-2"></i>Telegram
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

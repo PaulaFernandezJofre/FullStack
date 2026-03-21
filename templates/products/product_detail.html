@@ -57,32 +57,6 @@
 
                             <p class="text-muted mb-4">{{ product.short_description|default:product.description|truncatewords:30 }}</p>
                             
-                            <div class="mb-3">
-                                <p class="text-muted small mb-2"><i class="bi bi-share me-1"></i>Compartir en redes sociales:</p>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text=¡Mira%20este%20increíble%20proyecto!%20{{ product.name }}%20en%20LogicPerfect" 
-                                       target="_blank" class="btn btn-sm" style="background: #1DA1F2; color: white;">
-                                        <i class="bi bi-twitter-x me-1"></i> Twitter
-                                    </a>
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
-                                       target="_blank" class="btn btn-sm" style="background: #4267B2; color: white;">
-                                        <i class="bi bi-facebook me-1"></i> Facebook
-                                    </a>
-                                    <a href="https://www.linkedin.com/shareArticle?url={{ request.build_absolute_uri }}&title={{ product.name }}&summary=Mira%20este%20increíble%20proyecto%20en%20LogicPerfect" 
-                                       target="_blank" class="btn btn-sm" style="background: #0077B5; color: white;">
-                                        <i class="bi bi-linkedin me-1"></i> LinkedIn
-                                    </a>
-                                    <a href="https://wa.me/?text=¡Mira%20este%20increíble%20proyecto!%20{{ product.name }}%20{{ request.build_absolute_uri }}" 
-                                       target="_blank" class="btn btn-sm" style="background: #25D366; color: white;">
-                                        <i class="bi bi-whatsapp me-1"></i> WhatsApp
-                                    </a>
-                                    <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text=¡Mira%20este%20increíble%20proyecto!%20{{ product.name }}" 
-                                       target="_blank" class="btn btn-sm" style="background: #0088cc; color: white;">
-                                        <i class="bi bi-telegram me-1"></i> Telegram
-                                    </a>
-                                </div>
-                            </div>
-
                             <div class="mb-4">
                                 <div class="h2" style="color: var(--neon-cyan);">${{ product.price }}</div>
                             </div>
@@ -91,7 +65,7 @@
                                 <button class="btn btn-filled-cyan btn-lg add-to-cart" data-product-id="{{ product.id }}">
                                     <i class="bi bi-cart-plus me-2"></i>Agregar al Carrito
                                 </button>
-                                <button class="btn btn-neon-magenta btn-lg">
+                                <button class="btn btn-neon-blue btn-lg">
                                     <i class="bi bi-heart me-2"></i>Agregar a Favoritos
                                 </button>
                             </div>
