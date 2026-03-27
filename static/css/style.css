@@ -48,6 +48,11 @@
     --neon-gray: #8b9eb0;
     --neon-gray-soft: rgba(139, 158, 176, 0.1);
     
+    --neon-lime: #39ff14;
+    --neon-lime-light: #6fff4d;
+    --neon-lime-soft: rgba(57, 255, 20, 0.1);
+    --neon-lime-glow: rgba(57, 255, 20, 0.3);
+    
     /* Gradients - Premium */
     --gradient-hero: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 50%, rgba(0, 212, 229, 0.02) 100%);
     --gradient-card: linear-gradient(180deg, var(--bg-card) 0%, rgba(6, 6, 10, 0.95) 100%);
@@ -645,6 +650,17 @@ a.text-decoration-none:not([class*="text-neon"]):not([class*="btn"]):hover {
 .stat-card.blue::before { background: var(--neon-blue); }
 .stat-card.green::before { background: var(--neon-green); }
 .stat-card.gray::before { background: var(--neon-gray); }
+.stat-card.lime::before { background: var(--neon-lime); }
+.stat-card.yellow::before { background: var(--neon-yellow); }
+
+.stat-card .icon.lime { color: var(--neon-lime); }
+.stat-card .icon.yellow { color: var(--neon-yellow); }
+
+.icon-wrapper.lime { 
+    background: var(--neon-lime-soft); 
+    color: var(--neon-lime);
+    border: 1px solid rgba(57, 255, 20, 0.1);
+}
 
 .stat-card:hover {
     transform: translateY(-4px);
@@ -1248,6 +1264,7 @@ a.text-decoration-none:not([class*="text-neon"]):not([class*="btn"]):hover {
 .text-neon-blue { color: var(--neon-blue) !important; }
 .text-neon-green { color: var(--neon-green) !important; }
 .text-neon-gray { color: var(--neon-gray) !important; }
+.text-neon-lime { color: var(--neon-lime) !important; }
 .text-muted { color: var(--text-muted) !important; }
 
 /* =============================================================================

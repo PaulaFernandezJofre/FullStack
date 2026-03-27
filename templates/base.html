@@ -67,17 +67,6 @@
                                 <i class="bi bi-speedometer2 me-1"></i>Dashboard
                             </a>
                         </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="btn btn-neon-orange btn-sm ms-2" href="/account/login/">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/account/signup/">
-                                <i class="bi bi-person-plus me-1"></i>Registrarse
-                            </a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="bi bi-person-circle me-1"></i>{{ user.email|slice:":15" }}
@@ -105,12 +94,12 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/account/login/">
+                            <a class="btn btn-neon-orange btn-sm ms-2" href="/account/login/">
                                 <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-filled-magenta ms-2" href="/account/signup/" style="color: var(--text-inverse);">
+                            <a class="nav-link" href="/account/signup/">
                                 <i class="bi bi-person-plus me-1"></i>Registrarse
                             </a>
                         </li>
