@@ -118,7 +118,7 @@ main {
     color: var(--text-inverse);
 }
 
-/* Brand Logo - Clean & Simple */
+/* Brand Logo - Gradient Blue, Green, Yellow */
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -126,16 +126,19 @@ main {
 }
 
 .navbar-brand i {
-    color: var(--neon-orange);
     font-size: 1.8rem;
-    filter: drop-shadow(0 0 8px rgba(255, 159, 28, 0.6));
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 229, 0.4));
 }
 
 .logo-text {
     font-weight: 700;
     font-size: 1.4rem;
     letter-spacing: -0.5px;
-    background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -143,7 +146,7 @@ main {
 
 /* Footer Logo */
 .footer .logo-text {
-    background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -162,12 +165,16 @@ main {
 }
 
 .auth-card .logo i {
-    color: var(--neon-orange);
-    filter: drop-shadow(0 0 8px rgba(255, 159, 28, 0.6));
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 229, 0.4));
 }
 
 .auth-card .logo-text {
-    background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
