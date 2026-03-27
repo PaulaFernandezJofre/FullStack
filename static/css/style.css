@@ -35,10 +35,15 @@
     --neon-green-soft: rgba(61, 220, 132, 0.1);
     --neon-green-glow: rgba(61, 220, 132, 0.3);
     
-    --neon-yellow: #a8e6cf;
-    --neon-yellow-light: #c4f0de;
-    --neon-yellow-soft: rgba(168, 230, 207, 0.1);
-    --neon-yellow-glow: rgba(168, 230, 207, 0.3);
+    --neon-yellow: #ffd700;
+    --neon-yellow-light: #ffe44d;
+    --neon-yellow-soft: rgba(255, 215, 0, 0.1);
+    --neon-yellow-glow: rgba(255, 215, 0, 0.4);
+    
+    --neon-orange: #ff9f1c;
+    --neon-orange-light: #ffb84d;
+    --neon-orange-soft: rgba(255, 159, 28, 0.1);
+    --neon-orange-glow: rgba(255, 159, 28, 0.4);
     
     --neon-gray: #8b9eb0;
     --neon-gray-soft: rgba(139, 158, 176, 0.1);
@@ -113,38 +118,38 @@ main {
     color: var(--text-inverse);
 }
 
-/* Brand Logo - Gradient Lightning Bolt */
+/* Brand Logo - Yellow & Orange Gradient */
 .navbar-brand i {
-    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
+    background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 12px rgba(0, 212, 229, 0.5)) drop-shadow(0 0 25px rgba(61, 220, 132, 0.3));
+    filter: drop-shadow(0 0 12px rgba(255, 167, 38, 0.5)) drop-shadow(0 0 25px rgba(255, 167, 38, 0.3));
     font-size: 1.8rem;
 }
 
 .navbar-brand .brand-l, .navbar-brand .brand-i, .navbar-brand .brand-e, .navbar-brand .brand-e2 { 
-    color: var(--neon-cyan); 
-    text-shadow: 0 0 15px var(--neon-cyan-glow); 
+    color: var(--neon-orange); 
+    text-shadow: 0 0 15px rgba(255, 167, 38, 0.5); 
 }
 .navbar-brand .brand-o, .navbar-brand .brand-c, .navbar-brand .brand-r, .navbar-brand .brand-c2 { 
-    color: var(--neon-green); 
-    text-shadow: 0 0 15px var(--neon-green-glow); 
+    color: var(--neon-yellow); 
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5); 
 }
 .navbar-brand .brand-g, .navbar-brand .brand-p1, .navbar-brand .brand-f, .navbar-brand .brand-t { 
-    color: var(--neon-yellow); 
-    text-shadow: 0 0 15px var(--neon-yellow-glow); 
+    color: var(--neon-orange); 
+    text-shadow: 0 0 15px rgba(255, 167, 38, 0.5); 
 }
 
 /* Footer Logo */
-.footer .brand-l, .footer .brand-i, .footer .brand-e, .footer .brand-e2 { color: var(--neon-cyan); }
-.footer .brand-o, .footer .brand-c, .footer .brand-r, .footer .brand-c2 { color: var(--neon-green); }
-.footer .brand-g, .footer .brand-p1, .footer .brand-f, .footer .brand-t { color: var(--neon-yellow); }
+.footer .brand-l, .footer .brand-i, .footer .brand-e, .footer .brand-e2 { color: var(--neon-orange); }
+.footer .brand-o, .footer .brand-c, .footer .brand-r, .footer .brand-c2 { color: var(--neon-yellow); }
+.footer .brand-g, .footer .brand-p1, .footer .brand-f, .footer .brand-t { color: var(--neon-orange); }
 
 /* Auth Card Logo */
-.auth-card .brand-l, .auth-card .brand-i, .auth-card .brand-e, .auth-card .brand-e2 { color: var(--neon-cyan); }
-.auth-card .brand-o, .auth-card .brand-c, .auth-card .brand-r, .auth-card .brand-c2 { color: var(--neon-green); }
-.auth-card .brand-g, .auth-card .brand-p1, .auth-card .brand-f, .auth-card .brand-t { color: var(--neon-yellow); }
+.auth-card .brand-l, .auth-card .brand-i, .auth-card .brand-e, .auth-card .brand-e2 { color: var(--neon-orange); }
+.auth-card .brand-o, .auth-card .brand-c, .auth-card .brand-r, .auth-card .brand-c2 { color: var(--neon-yellow); }
+.auth-card .brand-g, .auth-card .brand-p1, .auth-card .brand-f, .auth-card .brand-t { color: var(--neon-orange); }
 
 /* Links sin color con sombra neón verde sobria */
 .footer a:not([class*="text-neon"]):not([class*="text-"]),
@@ -429,6 +434,31 @@ a.text-decoration-none:not([class*="text-neon"]):not([class*="btn"]):hover {
     background: var(--neon-green);
     color: var(--text-inverse);
     box-shadow: var(--shadow-neon-green);
+    transform: translateY(-2px);
+}
+
+.btn-neon-orange {
+    background: transparent;
+    color: var(--neon-orange);
+    border: 1px solid var(--neon-orange);
+}
+
+.btn-neon-orange:hover {
+    background: var(--neon-orange);
+    color: var(--text-inverse);
+    box-shadow: 0 4px 20px rgba(255, 159, 28, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-filled-orange {
+    background: linear-gradient(135deg, var(--neon-orange) 0%, #ff8c00 100%);
+    color: var(--text-inverse);
+    border: none;
+    box-shadow: 0 4px 20px rgba(255, 159, 28, 0.15);
+}
+
+.btn-filled-orange:hover {
+    box-shadow: 0 8px 30px rgba(255, 159, 28, 0.25);
     transform: translateY(-2px);
 }
 
