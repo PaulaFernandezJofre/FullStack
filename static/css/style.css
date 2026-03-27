@@ -113,32 +113,36 @@ main {
     color: var(--text-inverse);
 }
 
-/* Brand Logo - Blue, Green, Yellow */
+/* Brand Logo - Gradient Lightning Bolt */
 .navbar-brand i {
-    color: var(--neon-cyan);
-    filter: drop-shadow(0 0 8px var(--neon-cyan-glow));
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-green) 50%, var(--neon-yellow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 12px rgba(0, 212, 229, 0.5)) drop-shadow(0 0 25px rgba(61, 220, 132, 0.3));
+    font-size: 1.8rem;
 }
 
-.navbar-brand .brand-l { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
-.navbar-brand .brand-o { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
-.navbar-brand .brand-g { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
-.navbar-brand .brand-i { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
-.navbar-brand .brand-c { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
-.navbar-brand .brand-p1 { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
-.navbar-brand .brand-e { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
-.navbar-brand .brand-r { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
-.navbar-brand .brand-f { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
-.navbar-brand .brand-e2 { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); }
-.navbar-brand .brand-c2 { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green-glow); }
-.navbar-brand .brand-t { color: var(--neon-yellow); text-shadow: 0 0 15px var(--neon-yellow-glow); }
+.navbar-brand .brand-l, .navbar-brand .brand-i, .navbar-brand .brand-e, .navbar-brand .brand-e2 { 
+    color: var(--neon-cyan); 
+    text-shadow: 0 0 15px var(--neon-cyan-glow); 
+}
+.navbar-brand .brand-o, .navbar-brand .brand-c, .navbar-brand .brand-r, .navbar-brand .brand-c2 { 
+    color: var(--neon-green); 
+    text-shadow: 0 0 15px var(--neon-green-glow); 
+}
+.navbar-brand .brand-g, .navbar-brand .brand-p1, .navbar-brand .brand-f, .navbar-brand .brand-t { 
+    color: var(--neon-yellow); 
+    text-shadow: 0 0 15px var(--neon-yellow-glow); 
+}
 
 /* Footer Logo */
-.footer .brand-l, .footer .brand-i, .footer .brand-e, .footer .brand-e2 { color: var(--neon-blue); }
+.footer .brand-l, .footer .brand-i, .footer .brand-e, .footer .brand-e2 { color: var(--neon-cyan); }
 .footer .brand-o, .footer .brand-c, .footer .brand-r, .footer .brand-c2 { color: var(--neon-green); }
 .footer .brand-g, .footer .brand-p1, .footer .brand-f, .footer .brand-t { color: var(--neon-yellow); }
 
 /* Auth Card Logo */
-.auth-card .brand-l, .auth-card .brand-i, .auth-card .brand-e, .auth-card .brand-e2 { color: var(--neon-blue); }
+.auth-card .brand-l, .auth-card .brand-i, .auth-card .brand-e, .auth-card .brand-e2 { color: var(--neon-cyan); }
 .auth-card .brand-o, .auth-card .brand-c, .auth-card .brand-r, .auth-card .brand-c2 { color: var(--neon-green); }
 .auth-card .brand-g, .auth-card .brand-p1, .auth-card .brand-f, .auth-card .brand-t { color: var(--neon-yellow); }
 
