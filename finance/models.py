@@ -108,27 +108,27 @@ class Account(models.Model):
         accounts_data = [
             {
                 'account_type': AccountType.IVA,
-                'name': 'IVA Chile',
-                'description': 'Impuesto al valor agregado - 19% de cada venta',
+                'name': 'IVA Chile (19%)',
+                'description': 'Impuesto al valor agregado - Para autoridades tributarias',
                 'percentage': Decimal('19.00'),
             },
             {
                 'account_type': AccountType.MERCADO_PAGO,
                 'name': 'Comisión Mercado Pago',
-                'description': 'Tarifa por procesamiento de pagos - ~5.99% + IVA',
+                'description': 'Tarifa por procesamiento de pagos (~6%)',
                 'percentage': Decimal('5.99'),
             },
             {
                 'account_type': AccountType.PLATFORM_MAINTENANCE,
-                'name': 'Mantención Plataforma',
-                'description': 'Costo de operación y mantenimiento de LogicPerfect - 5%',
-                'percentage': Decimal('5.00'),
+                'name': 'Ganancia Plataforma (15%)',
+                'description': 'Ganancia neta de LogicPerfect - 15% de cada venta',
+                'percentage': Decimal('15.00'),
             },
             {
                 'account_type': AccountType.SELLER_EARNINGS,
                 'name': 'Ganancias Vendedores',
-                'description': 'Pago neto a vendedores - 85% de cada venta',
-                'percentage': Decimal('85.00'),
+                'description': 'Pago neto a vendedores (~64% de cada venta)',
+                'percentage': Decimal('64.00'),
             },
         ]
         
@@ -242,39 +242,39 @@ class PaymentDistribution(models.Model):
         """
         Calcula la distribución de un monto bruto.
         
-        Ejemplo: $100.000 CLP
-        - IVA (19%): $19.000
-        - Mercado Pago (~6% sobre monto sin IVA): $4.860
-        - Mantención plataforma (5%): $3.807
-        - Vendedor (70%): $72.333
+        Distribución para $100.000 CLP:
+        - IVA Chile (19%): ~$16.000 (gobierno)
+        - Mercado Pago (~6%): ~$5.040 (procesamiento)
+        - Plataforma (15%): $15.000 (ganancia neta LogicPerfect)
+        - Vendedor (~64%): ~$63.960 (pago neto al vendedor)
         """
-        # Montos base
+        # Tasas
         iva_rate = Decimal('0.19')
         mp_fee_rate = Decimal('0.0599')  # ~5.99%
-        platform_rate = Decimal('0.05')  # 5%
-        seller_rate = Decimal('0.70')  # 70% para vendedor
+        platform_rate = Decimal('0.15')  # 15% ganancia neta plataforma
+        seller_rate = Decimal('0.64')   # ~64% para vendedor
         
-        # Cálculo del IVA sobre el monto total
+        # IVA Chile (19%)
         iva = gross_amount * iva_rate / (Decimal('1') + iva_rate)
-        amount_without_iva = gross_amount - iva
         
-        # Comisión Mercado Pago sobre monto sin IVA
+        # Mercado Pago (~6% sobre monto sin IVA)
+        amount_without_iva = gross_amount - iva
         mercadopago = amount_without_iva * mp_fee_rate
         
-        #剩下的分配
-        after_mp = amount_without_iva - mercadopago
+        # Después de IVA y MP fee
+        after_costs = amount_without_iva - mercadopago
         
-        # Comision de plataforma
-        platform = after_mp * platform_rate
+        # Plataforma (15% del total = ganancia neta)
+        platform_profit = gross_amount * platform_rate
         
-        # Pago al vendedor
-        seller = after_mp - platform
+        # Vendedor (el resto)
+        seller = after_costs - platform_profit
         
         return {
             'gross_amount': gross_amount,
             'iva_amount': iva.quantize(Decimal('1')),
             'mercadopago_fee': mercadopago.quantize(Decimal('1')),
-            'platform_fee': platform.quantize(Decimal('1')),
+            'platform_fee': platform_profit.quantize(Decimal('1')),
             'seller_amount': seller.quantize(Decimal('1')),
             'iva_rate': iva_rate * 100,
             'mp_rate': mp_fee_rate * 100,
