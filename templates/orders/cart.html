@@ -13,7 +13,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     {% for item in cart_items %}
-                    <div class="row align-items-center py-3 {% not forloop.last %}border-bottom{% endif %}">
+                    <div class="row align-items-center py-3{% if not forloop.last %} border-bottom{% endif %}">
                         <div class="col-md-2">
                             <img src="{{ item.product.thumbnail_url|default:item.product.image.url|default:'https://via.placeholder.com/100' }}" 
                                  class="img-fluid rounded" alt="{{ item.product.name }}">
