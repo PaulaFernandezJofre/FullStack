@@ -118,38 +118,60 @@ main {
     color: var(--text-inverse);
 }
 
-/* Brand Logo - Yellow & Orange Gradient */
+/* Brand Logo - Clean & Simple */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .navbar-brand i {
+    color: var(--neon-orange);
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 8px rgba(255, 159, 28, 0.6));
+}
+
+.logo-text {
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
     background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 0 12px rgba(255, 167, 38, 0.5)) drop-shadow(0 0 25px rgba(255, 167, 38, 0.3));
-    font-size: 1.8rem;
-}
-
-.navbar-brand .brand-l, .navbar-brand .brand-i, .navbar-brand .brand-e, .navbar-brand .brand-e2 { 
-    color: var(--neon-orange); 
-    text-shadow: 0 0 15px rgba(255, 167, 38, 0.5); 
-}
-.navbar-brand .brand-o, .navbar-brand .brand-c, .navbar-brand .brand-r, .navbar-brand .brand-c2 { 
-    color: var(--neon-yellow); 
-    text-shadow: 0 0 15px rgba(255, 215, 0, 0.5); 
-}
-.navbar-brand .brand-g, .navbar-brand .brand-p1, .navbar-brand .brand-f, .navbar-brand .brand-t { 
-    color: var(--neon-orange); 
-    text-shadow: 0 0 15px rgba(255, 167, 38, 0.5); 
 }
 
 /* Footer Logo */
-.footer .brand-l, .footer .brand-i, .footer .brand-e, .footer .brand-e2 { color: var(--neon-orange); }
-.footer .brand-o, .footer .brand-c, .footer .brand-r, .footer .brand-c2 { color: var(--neon-yellow); }
-.footer .brand-g, .footer .brand-p1, .footer .brand-f, .footer .brand-t { color: var(--neon-orange); }
+.footer .logo-text {
+    background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
 
 /* Auth Card Logo */
-.auth-card .brand-l, .auth-card .brand-i, .auth-card .brand-e, .auth-card .brand-e2 { color: var(--neon-orange); }
-.auth-card .brand-o, .auth-card .brand-c, .auth-card .brand-r, .auth-card .brand-c2 { color: var(--neon-yellow); }
-.auth-card .brand-g, .auth-card .brand-p1, .auth-card .brand-f, .auth-card .brand-t { color: var(--neon-orange); }
+.auth-card .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.auth-card .logo i {
+    color: var(--neon-orange);
+    filter: drop-shadow(0 0 8px rgba(255, 159, 28, 0.6));
+}
+
+.auth-card .logo-text {
+    background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
 /* Links sin color con sombra neón verde sobria */
 .footer a:not([class*="text-neon"]):not([class*="text-"]),

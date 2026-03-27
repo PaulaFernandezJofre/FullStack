@@ -33,7 +33,7 @@
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/">
-                <i class="bi bi-lightning-charge-fill"></i><span class="brand-l">L</span><span class="brand-o">o</span><span class="brand-g">g</span><span class="brand-i">i</span><span class="brand-c">c</span><span class="brand-p1">P</span><span class="brand-e">e</span><span class="brand-r">r</span><span class="brand-f">f</span><span class="brand-e2">e</span><span class="brand-c2">c</span><span class="brand-t">t</span>
+                <i class="bi bi-lightning-charge-fill"></i><span class="logo-text">LogicPerfect</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -65,6 +65,17 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/account/dashboard/">
                                 <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="btn btn-neon-orange btn-sm ms-2" href="/account/login/">
+                                <i class="bi bi-box-arrow-in-right me-1"></i>Iniciar Sesión
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/account/signup/">
+                                <i class="bi bi-person-plus me-1"></i>Registrarse
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -142,7 +153,7 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <h5><i class="bi bi-lightning-charge-fill"></i><span class="brand-l">L</span><span class="brand-o">o</span><span class="brand-g">g</span><span class="brand-i">i</span><span class="brand-c">c</span><span class="brand-p1">P</span><span class="brand-e">e</span><span class="brand-r">r</span><span class="brand-f">f</span><span class="brand-e2">e</span><span class="brand-c2">c</span><span class="brand-t">t</span></h5>
+                    <h5><i class="bi bi-lightning-charge-fill"></i><span class="logo-text">LogicPerfect</span></h5>
                     <p class="text-muted mt-3">Tu marketplace premium para proyectos de programación de alta calidad. Compra y vende software, templates, aplicaciones y más.</p>
                     <small class="text-muted"><i class="bi bi-code-slash text-neon-green me-1"></i>Powered by developers, for developers</small>
                 </div>
