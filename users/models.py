@@ -51,12 +51,21 @@ class User(AbstractUser):
     
     # Información de vendedor
     company_name = models.CharField(_('nombre de empresa'), max_length=255, blank=True)
-    tax_id = models.CharField(_('RFC/TIN'), max_length=50, blank=True)
+    tax_id = models.CharField(_('RUT/TIN'), max_length=20, blank=True)
+    rut_verified = models.BooleanField(_('RUT verificado'), default=False)
     website = models.URLField(_('sitio web'), blank=True)
     
-    # Configuración de pagos
+    # Verificación de cuenta
+    email_verified = models.BooleanField(_('email verificado'), default=False)
+    password_verified = models.BooleanField(_('contraseña verificada'), default=False)
+    name_verified = models.BooleanField(_('nombres verificados'), default=False)
+    account_verified = models.BooleanField(_('cuenta verificada'), default=False)
+    
+    # Configuración de pagos - Mercado Pago Chile
+    mercadopago_email = models.EmailField(_('email Mercado Pago'), blank=True)
     mercadopago_customer_id = models.CharField(max_length=100, blank=True)
     mercadopago_seller_id = models.CharField(max_length=100, blank=True)
+    mercadopago_verified = models.BooleanField(_('Mercado Pago verificado'), default=False)
     bank_account_verified = models.BooleanField(default=False)
     payout_method = models.CharField(
         _('método de pago'),
@@ -70,6 +79,7 @@ class User(AbstractUser):
     bank_name = models.CharField(_('nombre del banco'), max_length=100, blank=True)
     bank_account_number = models.CharField(_('número de cuenta'), max_length=50, blank=True)
     bank_clabe = models.CharField(_('CLABE interbancaria'), max_length=20, blank=True)
+    bank_rut = models.CharField(_('RUT titular cuenta'), max_length=20, blank=True)
     
     # Preferencias
     language = models.CharField(max_length=10, default='es')
