@@ -4,8 +4,7 @@ Lógica de distribución de pagos y cálculos financieros
 """
 
 from decimal import Decimal
-from django.db.models import Sum, Count
-from django.utils import timezone
+from django.db.models import Sum
 
 from .models import Account, PaymentDistribution, FinancialTransaction, AccountType, TransactionType, TransactionStatus
 

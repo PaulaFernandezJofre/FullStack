@@ -5,18 +5,21 @@ URLs de Órdenes
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-from .views import CartViewSet, OrderViewSet, DownloadViewSet, CouponViewSet, CheckoutTemplateView
+from . import views
 
 router = DefaultRouter()
-router.register('api/cart', CartViewSet, basename='cart')
-router.register('api/orders', OrderViewSet, basename='orders')
-router.register('api/downloads', DownloadViewSet, basename='downloads')
-router.register('api/coupons', CouponViewSet, basename='coupons')
+router.register('api/cart', views.CartViewSet, basename='cart')
+router.register('api/orders', views.OrderViewSet, basename='orders')
+router.register('api/downloads', views.DownloadViewSet, basename='downloads')
+router.register('api/coupons', views.CouponViewSet, basename='coupons')
 
 urlpatterns = [
     # Frontend
-    path('checkout/', CheckoutTemplateView.as_view(), name='checkout'),
-    path('cart/', CheckoutTemplateView.as_view(), name='cart'),
+    path('checkout/', views.CheckoutTemplateView.as_view(), name='checkout'),
+    path('checkout/process/', views.CheckoutProcessView.as_view(), name='checkout-process'),
+    path('cart/', views.CartTemplateView.as_view(), name='cart'),
+    path('cart/remove/<uuid:item_id>/', views.CartRemoveItemView.as_view(), name='cart-remove'),
+    path('apply-coupon/', views.ApplyCouponView.as_view(), name='apply-coupon'),
     
     # API
     path('', include(router.urls)),

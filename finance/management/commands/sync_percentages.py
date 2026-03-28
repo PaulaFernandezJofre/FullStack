@@ -3,7 +3,6 @@ Command to sync financial percentages automatically
 """
 from django.core.management.base import BaseCommand
 from finance.sync import PercentageSyncService, SellerEarningsService
-from finance.models import Account
 
 
 class Command(BaseCommand):

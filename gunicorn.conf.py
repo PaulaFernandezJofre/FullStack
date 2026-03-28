@@ -2,7 +2,6 @@
 # Gunicorn Configuration - LogicPerfect
 # =============================================================================
 
-import multiprocessing
 import os
 
 # Binding

@@ -5,7 +5,7 @@ Vistas de Analítica
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Sum, Count, Avg
+from django.db.models import Sum, Count
 from django.utils import timezone
 from datetime import timedelta
 
@@ -94,7 +94,6 @@ class AnalyticsViewSet(viewsets.ReadOnlyModelViewSet):
     def sales_by_category(self, request):
         """Ventas por categoría."""
         from products.models import Product
-        from orders.models import OrderItem
         
         categories = Product.objects.filter(
             status=Product.Status.APPROVED

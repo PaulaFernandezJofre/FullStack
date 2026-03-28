@@ -6,66 +6,87 @@
 {% block content %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="dashboard-card">
-                <h2 class="mb-4">
-                    <i class="bi bi-life-preserver text-neon-cyan me-2"></i>{{ page_title }}
-                </h2>
-                
-                <div class="mb-4">
-                    <h5 class="text-neon-lime mb-3"><i class="bi bi-question-circle me-2"></i>¿Cómo podemos ayudarte?</h5>
-                    <div class="input-group mb-4">
-                        <span class="input-group-text" style="background: rgba(0, 245, 255, 0.1); border-color: rgba(0, 245, 255, 0.3);">
-                            <i class="bi bi-search text-neon-cyan"></i>
-                        </span>
-                        <input type="text" class="form-control" placeholder="Busca en nuestra ayuda..." 
-                               style="background: rgba(10, 10, 15, 0.8); border-color: rgba(0, 245, 255, 0.3); color: var(--text-primary);">
-                    </div>
-                </div>
-                
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="help-card">
-                            <i class="bi bi-box-seam text-neon-lime mb-2"></i>
-                            <h6>Vender en LogicPerfect</h6>
-                            <p class="text-muted small mb-0">Aprende cómo publicar tus productos y gestionar tus ventas.</p>
-                            <a href="/faq/" class="stretched-link"></a>
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h1 class="mb-3">
+                    <i class="bi bi-life-preserver text-neon-cyan me-2"></i>Centro de Ayuda
+                </h1>
+                <p class="text-muted">Encuentra guías detalladas y tutoriales para usar LogicPerfect</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'core:seller-guide' %}" class="text-decoration-none">
+                        <div class="help-card h-100">
+                            <div class="help-icon cyan">
+                                <i class="bi bi-shop"></i>
+                            </div>
+                            <h5 class="mt-3 mb-2">Guía del Vendedor</h5>
+                            <p class="text-muted small mb-0">Cómo publicar productos, gestionar ventas y recibir pagos.</p>
+                            <span class="help-link">Ver guía <i class="bi bi-arrow-right ms-1"></i></span>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="help-card">
-                            <i class="bi bi-bag-check text-neon-cyan mb-2"></i>
-                            <h6>Comprar Productos</h6>
-                            <p class="text-muted small mb-0">Guía para compradores: cómo comprar y descargar productos.</p>
-                            <a href="/faq/" class="stretched-link"></a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="help-card">
-                            <i class="bi bi-credit-card text-neon-yellow mb-2"></i>
-                            <h6>Pagos y Retiros</h6>
-                            <p class="text-muted small mb-0">Información sobre métodos de pago y retiros de ganancias.</p>
-                            <a href="/faq/" class="stretched-link"></a>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="help-card">
-                            <i class="bi bi-shield-check text-neon-blue mb-2"></i>
-                            <h6>Cuenta y Seguridad</h6>
-                            <p class="text-muted small mb-0">Gestiona tu cuenta, contraseñas y configuración de seguridad.</p>
-                            <a href="/faq/" class="stretched-link"></a>
-                        </div>
-                    </div>
-                </div>
-                
-                <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
-                
-                <div class="text-center">
-                    <p class="text-muted mb-3">¿No encontraste lo que buscabas?</p>
-                    <a href="/contact/" class="btn btn-neon-cyan">
-                        <i class="bi bi-envelope me-2"></i>Contactar Soporte
                     </a>
                 </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'core:buyer-guide' %}" class="text-decoration-none">
+                        <div class="help-card h-100">
+                            <div class="help-icon lime">
+                                <i class="bi bi-bag-check"></i>
+                            </div>
+                            <h5 class="mt-3 mb-2">Guía del Comprador</h5>
+                            <p class="text-muted small mb-0">Cómo comprar, descargar productos y gestionar tus compras.</p>
+                            <span class="help-link">Ver guía <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'core:payments-guide' %}" class="text-decoration-none">
+                        <div class="help-card h-100">
+                            <div class="help-icon yellow">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                            <h5 class="mt-3 mb-2">Pagos y Retiros</h5>
+                            <p class="text-muted small mb-0">Métodos de pago, retiros de ganancias y comisiones.</p>
+                            <span class="help-link">Ver guía <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="col-md-6 col-lg-3">
+                    <a href="{% url 'core:account-guide' %}" class="text-decoration-none">
+                        <div class="help-card h-100">
+                            <div class="help-icon blue">
+                                <i class="bi bi-shield-lock"></i>
+                            </div>
+                            <h5 class="mt-3 mb-2">Cuenta y Seguridad</h5>
+                            <p class="text-muted small mb-0">Gestionar cuenta, contraseñas y configuración de seguridad.</p>
+                            <span class="help-link">Ver guía <i class="bi bi-arrow-right ms-1"></i></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-5 p-4 rounded" style="background: rgba(0, 245, 255, 0.05); border: 1px solid rgba(0, 245, 255, 0.2);">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-2"><i class="bi bi-lightbulb text-neon-yellow me-2"></i>¿Buscas respuestas rápidas?</h5>
+                        <p class="text-muted mb-0">Consulta las <a href="{% url 'core:faq' %}" class="text-neon-cyan">Preguntas Frecuentes</a> para encontrar respuestas inmediatas a las dudas más comunes.</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <a href="{% url 'core:faq' %}" class="btn btn-neon-cyan">
+                            <i class="bi bi-question-circle me-2"></i>Ver FAQ
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                <p class="text-muted mb-3">¿No encontraste lo que buscabas?</p>
+                <a href="{% url 'support:create-ticket' %}" class="btn btn-neon-lime">
+                    <i class="bi bi-ticket me-2"></i>Crear Ticket de Soporte
+                </a>
             </div>
         </div>
     </div>
@@ -73,20 +94,55 @@
 
 <style>
 .help-card {
-    background: rgba(10, 10, 15, 0.5);
-    border: 1px solid rgba(0, 245, 255, 0.2);
-    border-radius: 12px;
-    padding: 1.5rem;
+    background: rgba(10, 10, 15, 0.6);
+    border: 1px solid rgba(0, 245, 255, 0.15);
+    border-radius: 16px;
+    padding: 2rem;
     transition: all 0.3s ease;
-    position: relative;
+    text-align: center;
 }
 .help-card:hover {
     border-color: var(--neon-cyan);
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px rgba(0, 245, 255, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 245, 255, 0.15);
 }
-.help-card i {
-    font-size: 2rem;
+.help-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+.help-icon i {
+    font-size: 1.75rem;
+}
+.help-icon.cyan {
+    background: rgba(0, 209, 255, 0.15);
+    color: var(--neon-cyan);
+}
+.help-icon.lime {
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--neon-lime);
+}
+.help-icon.yellow {
+    background: rgba(255, 193, 7, 0.15);
+    color: var(--neon-yellow);
+}
+.help-icon.blue {
+    background: rgba(0, 135, 255, 0.15);
+    color: var(--neon-blue);
+}
+.help-card:hover .help-icon.cyan { box-shadow: 0 0 20px rgba(0, 209, 255, 0.4); }
+.help-card:hover .help-icon.lime { box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+.help-card:hover .help-icon.yellow { box-shadow: 0 0 20px rgba(255, 193, 7, 0.4); }
+.help-card:hover .help-icon.blue { box-shadow: 0 0 20px rgba(0, 135, 255, 0.4); }
+.help-link {
+    display: block;
+    margin-top: 1rem;
+    color: var(--neon-cyan);
+    font-size: 0.875rem;
 }
 </style>
 {% endblock %}

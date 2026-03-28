@@ -5,10 +5,9 @@ Vistas de Productos
 from rest_framework import viewsets, status, permissions, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Q, Avg, Count
 from django.shortcuts import get_object_or_404
 
-from .models import Product, Category, Tag, ProductImage, ProductFile, ProductReview
+from .models import Product, Category, Tag
 from .serializers import (
     ProductSerializer, ProductListSerializer, ProductDetailSerializer,
     ProductCreateSerializer, CategorySerializer, TagSerializer,

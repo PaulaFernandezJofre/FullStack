@@ -177,29 +177,35 @@ class Order(models.Model):
         decimal_places=2,
         default=0
     )
-    tax = models.DecimalField(
-        _('impuesto'),
-        max_digits=12,
-        decimal_places=2,
-        default=0
-    )
     total = models.DecimalField(
         _('total'),
         max_digits=12,
         decimal_places=2,
         validators=[MinValueValidator(0)]
     )
-    currency = models.CharField(max_length=3, default='MXN')
+    currency = models.CharField(max_length=3, default='CLP')
     
-    # Comisiones (calculadas al momento del pago)
-    platform_commission = models.DecimalField(
-        _('comisión plataforma'),
+    # Distribución Financiera Completa (calculada al momento del pago)
+    iva_amount = models.DecimalField(
+        _('monto IVA Chile'),
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+    mercadopago_fee = models.DecimalField(
+        _('comisión Mercado Pago'),
+        max_digits=12,
+        decimal_places=2,
+        default=0
+    )
+    platform_maintenance = models.DecimalField(
+        _('mantención plataforma'),
         max_digits=12,
         decimal_places=2,
         default=0
     )
     seller_total = models.DecimalField(
-        _('total para vendedores'),
+        _('pago neto vendedor'),
         max_digits=12,
         decimal_places=2,
         default=0
@@ -262,7 +268,7 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         if not self.order_number:
             self.order_number = self.generate_order_number()
-        if not self.subtotal:
+        if self.pk is None or self.items.exists():
             self.calculate_totals()
         super().save(*args, **kwargs)
     
@@ -277,7 +283,23 @@ class Order(models.Model):
         return f"ORD-{new_number:08d}"
     
     def calculate_totals(self):
-        """Calcula los totales de la orden."""
+        """
+        Calcula los totales de la orden con distribución financiera completa.
+        
+        Para $100.000 CLP (ejemplo):
+        - Subtotal: $100.000
+        - Descuento: -$10.000
+        - Después de descuento: $90.000
+        
+        Distribución sobre monto sin IVA:
+        - IVA (19%): ~$14.370
+        - Mercado Pago (~6%): ~$4.525
+        - Mantención Plataforma (15%): $13.500
+        - Vendedor (64%): $57.605
+        """
+        from decimal import Decimal
+        from django.conf import settings
+        
         items = self.items.all()
         self.subtotal = sum(item.subtotal for item in items)
         
@@ -285,11 +307,30 @@ class Order(models.Model):
             self.coupon_discount = self.coupon.calculate_discount(self.subtotal)
         
         self.discount = self.coupon_discount
-        self.total = self.subtotal - self.discount + self.tax
         
-        from django.conf import settings
-        self.platform_commission = self.total * settings.PLATFORM_COMMISSION_RATE
-        self.seller_total = self.total * settings.SELLER_COMMISSION_RATE
+        gross_amount = Decimal(str(self.subtotal - self.discount))
+        
+        iva_rate = Decimal(str(settings.IVA_RATE))
+        mp_rate = Decimal(str(settings.MERCADO_PAGO_FEE_RATE))
+        platform_rate = Decimal(str(settings.PLATFORM_MAINTENANCE_RATE))
+        
+        iva = gross_amount * iva_rate / (Decimal('1') + iva_rate)
+        amount_without_iva = gross_amount - iva
+        
+        mp_fee = amount_without_iva * mp_rate
+        
+        amount_after_costs = amount_without_iva - mp_fee
+        
+        platform = gross_amount * platform_rate
+        
+        seller = amount_after_costs - platform
+        
+        self.iva_amount = iva.quantize(Decimal('1'))
+        self.mercadopago_fee = mp_fee.quantize(Decimal('1'))
+        self.platform_maintenance = platform.quantize(Decimal('1'))
+        self.seller_total = seller.quantize(Decimal('1'))
+        
+        self.total = gross_amount
     
     def mark_as_paid(self, mercadopago_payment_id=None, mercadopago_merchant_order_id=None):
         """Marca la orden como pagada."""
@@ -357,12 +398,14 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     subtotal = models.DecimalField(max_digits=12, decimal_places=2)
     
-    # Comisiones para este item
-    platform_fee = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    seller_earnings = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    
-    # Descuento aplicado
+    # Descuento aplicado a este item
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
+    # Distribución financiera para este item
+    iva_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    mercadopago_fee = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    platform_maintenance = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    seller_earnings = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     
     # Descarga
     download_count = models.PositiveIntegerField(default=0)
@@ -384,12 +427,34 @@ class OrderItem(models.Model):
         return f"{self.product_name} - {self.order.order_number}"
     
     def save(self, *args, **kwargs):
+        from decimal import Decimal
+        from django.conf import settings
+        
         if not self.subtotal:
             self.subtotal = self.unit_price * self.quantity
         
-        from django.conf import settings
-        self.platform_fee = self.subtotal * settings.PLATFORM_COMMISSION_RATE
-        self.seller_earnings = self.subtotal * settings.SELLER_COMMISSION_RATE
+        if self.subtotal > 0:
+            gross_amount = Decimal(str(self.subtotal - self.discount))
+            
+            iva_rate = Decimal(str(settings.IVA_RATE))
+            mp_rate = Decimal(str(settings.MERCADO_PAGO_FEE_RATE))
+            platform_rate = Decimal(str(settings.PLATFORM_MAINTENANCE_RATE))
+            
+            iva = gross_amount * iva_rate / (Decimal('1') + iva_rate)
+            amount_without_iva = gross_amount - iva
+            
+            mp_fee = amount_without_iva * mp_rate
+            
+            amount_after_costs = amount_without_iva - mp_fee
+            
+            platform = gross_amount * platform_rate
+            
+            seller = amount_after_costs - platform
+            
+            self.iva_amount = iva.quantize(Decimal('1'))
+            self.mercadopago_fee = mp_fee.quantize(Decimal('1'))
+            self.platform_maintenance = platform.quantize(Decimal('1'))
+            self.seller_earnings = seller.quantize(Decimal('1'))
         
         if not self.product_name and self.product:
             self.product_name = self.product.name

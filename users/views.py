@@ -2,22 +2,21 @@
 Vistas de Usuario
 """
 
-from rest_framework import viewsets, status, permissions, serializers
+from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from django.contrib.auth import get_user_model
-from django.db.models import Q
 
-from .models import UserSession, SellerStats, BuyerProfile
+from .models import UserSession, SellerStats
 from .serializers import (
     UserSerializer, UserRegistrationSerializer, UserProfileSerializer,
     PasswordChangeSerializer, SellerOnboardingSerializer, UserPublicSerializer
 )
-from .permissions import IsOwnerOrAdmin
 
 User = get_user_model()
 
@@ -151,15 +150,6 @@ class UserSessionViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         return UserSession.objects.filter(user=self.request.user)
-
-
-class CustomTokenObtainPairSerializer(serializers.Serializer):
-    """Serializer personalizado para token."""
-    email = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
-
-from rest_framework import serializers
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cuenta y Seguridad - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="guide-sidebar">
+                <h5 class="mb-3"><i class="bi bi-list text-neon-blue me-2"></i>Contenido</h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="#registro">1. Registro</a>
+                    <a class="nav-link" href="#perfil">2. Perfil</a>
+                    <a class="nav-link" href="#seguridad">3. Seguridad</a>
+                    <a class="nav-link" href="#password">4. Contraseña</a>
+                    <a class="nav-link" href="#roles">5. Roles</a>
+                </nav>
+                <hr class="my-3" style="border-color: rgba(255,255,255,0.1);">
+                <a href="{% url 'core:help' %}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Volver al Centro de Ayuda
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <div class="guide-content">
+                <h2 class="mb-4">
+                    <i class="bi bi-shield-lock text-neon-blue me-2"></i>Cuenta y Seguridad
+                </h2>
+                <p class="lead text-muted mb-5">Gestiona tu cuenta y mantiene tu información segura.</p>
+                
+                <section id="registro" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-person-plus text-neon-cyan me-2"></i>1. Registro</h4>
+                    <div class="guide-step">
+                        <p>Para crear una cuenta:</p>
+                        <ol class="guide-list">
+                            <li>Ve a la página de <a href="{% url 'account:register' %}">Registro</a></li>
+                            <li>Ingresa tu email y crea una contraseña segura</li>
+                            <li>Selecciona si eres <strong>Comprador</strong> o <strong>Vendedor</strong></li>
+                            <li>Verifica tu email haciendo clic en el enlace recibido</li>
+                        </ol>
+                    </div>
+                </section>
+                
+                <section id="perfil" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-person-circle text-neon-cyan me-2"></i>2. Perfil</h4>
+                    <div class="guide-step">
+                        <p>Para editar tu perfil:</p>
+                        <ol class="guide-list">
+                            <li>Ve a <strong>Mi Cuenta → Configuración</strong></li>
+                            <li>Actualiza tu nombre, foto y datos personales</li>
+                            <li>Agrega información de contacto</li>
+                            <li>Guarda los cambios</li>
+                        </ol>
+                    </div>
+                </section>
+                
+                <section id="seguridad" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-shield-check text-neon-cyan me-2"></i>3. Seguridad</h4>
+                    <div class="guide-step">
+                        <p>Recomendaciones de seguridad:</p>
+                        <ul class="guide-list">
+                            <li>Usa una <strong>contraseña segura</strong> con mínimo 8 caracteres</li>
+                            <li>No compartas tu contraseña con nadie</li>
+                            <li>Usa un email válido para recuperación de cuenta</li>
+                            <li>Cerra sesión cuando uses computadoras compartidas</li>
+                            <li>Habilita notificaciones de actividad sospechosa</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <section id="password" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-key text-neon-cyan me-2"></i>4. Cambiar Contraseña</h4>
+                    <div class="guide-step">
+                        <p>Para cambiar tu contraseña:</p>
+                        <ol class="guide-list">
+                            <li>Ve a <strong>Configuración → Seguridad</strong></li>
+                            <li>Haz clic en "Cambiar Contraseña"</li>
+                            <li>Ingresa tu contraseña actual</li>
+                            <li>Ingresa tu nueva contraseña (mínimo 8 caracteres)</li>
+                            <li>Confirma la nueva contraseña</li>
+                            <li>Guarda los cambios</li>
+                        </ol>
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Si olvidaste tu contraseña, usa "Olvidé mi contraseña" en el login.
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="roles" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-people text-neon-cyan me-2"></i>5. Tipos de Cuenta</h4>
+                    <div class="guide-step">
+                        <p>LogicPerfect tiene dos tipos de usuarios:</p>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 255, 136, 0.1);">
+                                    <h6><i class="bi bi-bag-check text-neon-lime me-2"></i>Comprador</h6>
+                                    <p class="small text-muted mb-2">Puede comprar productos y gestionar sus compras.</p>
+                                    <small>Crea una cuenta y comienza a comprar.</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 209, 255, 0.1);">
+                                    <h6><i class="bi bi-shop text-neon-cyan me-2"></i>Vendedor</h6>
+                                    <p class="small text-muted mb-2">Puede publicar y vender productos.</p>
+                                    <small>Crea una cuenta y cambia a vendedor desde Configuración.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="mt-5 p-4 rounded text-center" style="background: rgba(0, 135, 255, 0.1); border: 1px solid rgba(0, 135, 255, 0.3);">
+                    <h5 class="mb-3"><i class="bi bi-question-circle text-neon-blue me-2"></i>¿Tienes problemas con tu cuenta?</h5>
+                    <p class="text-muted mb-3">Consulta las <a href="{% url 'core:faq' %}">Preguntas Frecuentes</a> o contacta a soporte.</p>
+                    <a href="{% url 'support:create-ticket' %}" class="btn btn-neon-blue">
+                        <i class="bi bi-ticket me-2"></i>Crear Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.guide-sidebar {
+    background: rgba(10, 10, 15, 0.5);
+    border: 1px solid rgba(0, 135, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 80px;
+}
+.guide-sidebar .nav-link {
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.guide-sidebar .nav-link:hover {
+    color: var(--neon-blue);
+}
+.guide-content section {
+    scroll-margin-top: 100px;
+}
+.guide-step {
+    background: rgba(10, 10, 15, 0.3);
+    border-left: 3px solid var(--neon-blue);
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+}
+.guide-list {
+    padding-left: 1.5rem;
+}
+.guide-list li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+</style>
+{% endblock %}

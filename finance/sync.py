@@ -5,9 +5,8 @@ Mantiene actualizados los porcentajes de comisiones y ganancias
 
 from decimal import Decimal
 from django.db.models import Sum
-from django.utils import timezone
 
-from .models import Account, PaymentDistribution, FinancialTransaction, AccountType, TransactionType, TransactionStatus
+from .models import Account, PaymentDistribution, AccountType, TransactionStatus
 
 
 class PercentageSyncService:
@@ -210,9 +209,6 @@ class SellerEarningsService:
         """
         Calcula las ganancias de un vendedor específico.
         """
-        from orders.models import OrderItem
-        from users.models import SellerStats
-        
         # Obtener todas las ventas del vendedor
         sales = PaymentDistribution.objects.filter(
             order__items__product__seller=seller,

@@ -8,10 +8,8 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, FileExtensionValidator
-from django.core.files.storage import default_storage
 
 import uuid
-import os
 
 
 def product_upload_path(instance, filename):

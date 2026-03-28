@@ -95,7 +95,7 @@
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <p class="text-muted mb-1 small">Total Usuarios</p>
-                                <h3 class="mb-0">1,234</h3>
+                                <h3 class="mb-0">{{ total_users|default:"0" }}</h3>
                             </div>
                             <div class="icon cyan"><i class="bi bi-people"></i></div>
                         </div>
@@ -106,7 +106,7 @@
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <p class="text-muted mb-1 small">Ventas Totales</p>
-                                <h3 class="mb-0">$45K</h3>
+                                <h3 class="mb-0">${{ admin_financial_stats.total_seller|default:"0"|floatformat:0 }}</h3>
                             </div>
                             <div class="icon lime"><i class="bi bi-currency-dollar"></i></div>
                         </div>
@@ -116,10 +116,10 @@
                     <div class="stat-card yellow h-100">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <p class="text-muted mb-1 small">Productos</p>
-                                <h3 class="mb-0">567</h3>
+                                <p class="text-muted mb-1 small">IVA Recaudado</p>
+                                <h3 class="mb-0">${{ admin_financial_stats.total_iva|default:"0"|floatformat:0 }}</h3>
                             </div>
-                            <div class="icon yellow"><i class="bi bi-box-seam"></i></div>
+                            <div class="icon yellow"><i class="bi bi-percent"></i></div>
                         </div>
                     </div>
                 </div>
@@ -127,10 +127,41 @@
                     <div class="stat-card blue h-100">
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
-                                <p class="text-muted mb-1 small">Comisiones</p>
-                                <h3 class="mb-0">$6.8K</h3>
+                                <p class="text-muted mb-1 small">Comisiones MP</p>
+                                <h3 class="mb-0">${{ admin_financial_stats.total_mp_fee|default:"0"|floatformat:0 }}</h3>
                             </div>
-                            <div class="icon blue"><i class="bi bi-percent"></i></div>
+                            <div class="icon blue"><i class="bi bi-credit-card"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Financial Breakdown -->
+            <div class="dashboard-card mb-4">
+                <h5 class="mb-3"><i class="bi bi-pie-chart text-neon-cyan me-2"></i>Distribución Financiera</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(0, 209, 255, 0.1); border: 1px solid var(--neon-cyan);">
+                            <p class="text-muted small mb-1">Vendedores (64%)</p>
+                            <h4 class="mb-0 text-neon-cyan">${{ admin_financial_stats.total_seller|default:"0"|floatformat:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-lime);">
+                            <p class="text-muted small mb-1">Plataforma (15%)</p>
+                            <h4 class="mb-0 text-neon-lime">${{ admin_financial_stats.total_platform|default:"0"|floatformat:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(255, 193, 7, 0.1); border: 1px solid var(--neon-yellow);">
+                            <p class="text-muted small mb-1">IVA Chile (19%)</p>
+                            <h4 class="mb-0 text-neon-yellow">${{ admin_financial_stats.total_iva|default:"0"|floatformat:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(255, 105, 180, 0.1); border: 1px solid var(--neon-pink);">
+                            <p class="text-muted small mb-1">Mercado Pago (~6%)</p>
+                            <h4 class="mb-0 text-neon-pink">${{ admin_financial_stats.total_mp_fee|default:"0"|floatformat:0 }}</h4>
                         </div>
                     </div>
                 </div>
@@ -204,6 +235,38 @@
                                 <h3 class="mb-0">{{ seller_stats.total_sales|default:"0" }}</h3>
                             </div>
                             <div class="icon yellow"><i class="bi bi-cart-check"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Financial Breakdown for Seller -->
+            <div class="dashboard-card mb-4">
+                <h5 class="mb-3"><i class="bi bi-pie-chart text-neon-lime me-2"></i>Resumen de Distribución</h5>
+                <p class="text-muted small mb-3">Cuando un cliente paga $100.000 CLP, la distribución es:</p>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(0, 255, 136, 0.1); border: 1px solid var(--neon-lime);">
+                            <p class="text-muted small mb-1">Tu Ganancia (64%)</p>
+                            <h4 class="mb-0 text-neon-lime">${{ financial_breakdown.seller_earnings|default:"0"|floatformat:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(255, 193, 7, 0.1); border: 1px solid var(--neon-yellow);">
+                            <p class="text-muted small mb-1">IVA Chile (19%)</p>
+                            <h4 class="mb-0 text-neon-yellow">${{ financial_breakdown.iva_amount|default:"0"|floatformat:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(255, 105, 180, 0.1); border: 1px solid var(--neon-pink);">
+                            <p class="text-muted small mb-1">Mercado Pago (~6%)</p>
+                            <h4 class="mb-0 text-neon-pink">${{ financial_breakdown.mercadopago_fee|default:"0"|floatformat:0 }}</h4>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="text-center p-3 rounded" style="background: rgba(0, 209, 255, 0.1); border: 1px solid var(--neon-cyan);">
+                            <p class="text-muted small mb-1">Plataforma (15%)</p>
+                            <h4 class="mb-0 text-neon-cyan">${{ financial_breakdown.platform_maintenance|default:"0"|floatformat:0 }}</h4>
                         </div>
                     </div>
                 </div>

@@ -4,14 +4,12 @@ Frontend Views para Productos
 
 from django.views.generic import ListView, DetailView, CreateView
 from django.shortcuts import get_object_or_404
-from django.core.paginator import Paginator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 
 from .models import Product, Category
 from .forms import ProductForm
-from .serializers import ProductListSerializer
 
 
 class ProductListView(ListView):

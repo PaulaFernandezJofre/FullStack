@@ -226,11 +226,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MERCADO_PAGO_ACCESS_TOKEN = os.getenv('MERCADO_PAGO_ACCESS_TOKEN', '')
 MERCADO_PAGO_PUBLIC_KEY = os.getenv('MERCADO_PAGO_PUBLIC_KEY', '')
 MERCADO_PAGO_ENVIRONMENT = os.getenv('MERCADO_PAGO_ENVIRONMENT', 'sandbox')
-MERCADO_PAGO_CHILE_IVA = os.getenv('MERCADO_PAGO_CHILE_IVA', 'False') == 'True'
-MERCADO_PAGO_CHILE_IVA_RATE = float(os.getenv('MERCADO_PAGO_CHILE_IVA_RATE', 19))
+MERCADO_PAGO_CHILE_IVA = os.getenv('MERCADO_PAGO_CHILE_IVA', 'True') == 'True'
+MERCADO_PAGO_CHILE_IVA_RATE = 0.19
 
-PLATFORM_COMMISSION_RATE = 0.15
-SELLER_COMMISSION_RATE = 0.85
+# Distribución de Pagos LogicPerfect
+IVA_RATE = 0.19
+MERCADO_PAGO_FEE_RATE = 0.0599
+PLATFORM_MAINTENANCE_RATE = 0.15
+SELLER_RATE = 0.64
+
+# Porcentajes legacy (mantenidos por compatibilidad)
+PLATFORM_COMMISSION_RATE = PLATFORM_MAINTENANCE_RATE
+SELLER_COMMISSION_RATE = SELLER_RATE
 
 # =============================================================================
 # CACHE

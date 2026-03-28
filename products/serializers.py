@@ -3,7 +3,6 @@ Serializers de Producto
 """
 
 from rest_framework import serializers
-from django.db.models import Avg, Count
 from .models import Product, Category, Tag, ProductImage, ProductFile, ProductReview
 
 

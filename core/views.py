@@ -59,12 +59,18 @@ class FAQView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'FAQ'
         context['faqs'] = [
-            {'question': '¿Cómo funciona LogicPerfect?', 'answer': 'LogicPerfect es un marketplace donde puedes comprar y vender proyectos de programación. Los vendedores publican sus productos y los compradores pueden adquirirlos usando Mercado Pago.'},
-            {'question': '¿Cuáles son las comisiones?', 'answer': 'LogicPerfect cobra una comisión del 15% sobre cada venta. El vendedor recibe el 85% restante.'},
-            {'question': '¿Cómo recibo mis pagos?', 'answer': 'Los pagos se procesan a través de Mercado Pago. Puedes retirar tus ganancias a tu cuenta una vez que alcances el mínimo de $50 USD.'},
-            {'question': '¿Qué tipos de productos puedo vender?', 'answer': 'Puedes vender software, templates, cursos, apps web, apps móviles, plugins, scripts y más.'},
-            {'question': '¿Cuánto tiempo tarda en aprobarse un producto?', 'answer': 'Los productos son revisados por nuestro equipo en 24-48 horas hábiles.'},
-            {'question': '¿Qué métodos de pago acepta LogicPerfect?', 'answer': 'Aceptamos Mercado Pago como método de pago principal, con soporte para tarjetas de crédito, débito y saldo de Mercado Pago.'},
+            {'question': '¿Cómo funciona LogicPerfect?', 
+             'answer': 'Marketplace para comprar y vender proyectos de programación.'},
+            {'question': '¿Cuáles son las comisiones?', 
+             'answer': 'El vendedor recibe el 64%. El resto va a plataforma, IVA y Mercado Pago.'},
+            {'question': '¿Cómo recibo mis pagos?', 
+             'answer': 'Los pagos se procesan con Mercado Pago. Mínimo de retiro: $50 USD.'},
+            {'question': '¿Qué productos puedo vender?', 
+             'answer': 'Software, templates, cursos, apps, plugins, scripts y más.'},
+            {'question': '¿Cuánto tiempo tarda en aprobarse un producto?', 
+             'answer': 'Los productos son revisados por nuestro equipo en 24-48 horas hábiles.'},
+            {'question': '¿Qué métodos de pago acepta LogicPerfect?', 
+             'answer': 'Aceptamos Mercado Pago con soporte para tarjetas de crédito, débito y saldo.'},
         ]
         return context
 
@@ -97,3 +103,23 @@ class LicensesView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Licencias'
         return context
+
+
+class SellerGuideView(TemplateView):
+    """Guía del Vendedor."""
+    template_name = 'pages/seller_guide.html'
+
+
+class BuyerGuideView(TemplateView):
+    """Guía del Comprador."""
+    template_name = 'pages/buyer_guide.html'
+
+
+class PaymentsGuideView(TemplateView):
+    """Guía de Pagos y Retiros."""
+    template_name = 'pages/payments_guide.html'
+
+
+class AccountGuideView(TemplateView):
+    """Guía de Cuenta y Seguridad."""
+    template_name = 'pages/account_guide.html'

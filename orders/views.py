@@ -5,14 +5,16 @@ Vistas de Órdenes
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render, redirect
 from django.http import FileResponse
 from django.conf import settings
 from django.views import View
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 
-from .models import Cart, CartItem, Order, OrderItem, ProductDownload, Coupon, Refund
+from .models import Cart, CartItem, Order, OrderItem, ProductDownload, Coupon
 from .serializers import (
-    CartSerializer, CartItemSerializer, CartAddItemSerializer, OrderSerializer, OrderDetailSerializer, CheckoutSerializer,
+    CartSerializer, CartAddItemSerializer, OrderSerializer, OrderDetailSerializer, CheckoutSerializer,
     DownloadSerializer, CouponSerializer, RefundSerializer, RefundCreateSerializer
 )
 
@@ -24,7 +26,6 @@ class CheckoutTemplateView(View):
     
     def get(self, request):
         if not request.user.is_authenticated:
-            from django.shortcuts import redirect
             login_url = redirect('account:login')
             login_url['Location'] += '?next=' + request.path
             return login_url
@@ -53,6 +54,208 @@ class CheckoutTemplateView(View):
             'chile_iva_enabled': getattr(settings, 'MERCADO_PAGO_CHILE_IVA', False),
         }
         return render(request, self.template_name, context)
+
+
+class CartTemplateView(View):
+    """Vista del carrito de compras."""
+    
+    template_name = 'orders/cart.html'
+    
+    def get(self, request):
+        if request.user.is_authenticated:
+            cart, _ = Cart.objects.get_or_create(user=request.user)
+        else:
+            cart = None
+        
+        if not cart:
+            cart_items = []
+            subtotal = 0
+            discount = 0
+            total = 0
+        else:
+            cart_items = cart.items.select_related('product', 'product__seller').all()
+            subtotal = cart.subtotal
+            discount = 0
+            total = subtotal - discount
+        
+        context = {
+            'cart_items': cart_items,
+            'subtotal': subtotal,
+            'discount': discount,
+            'total': total,
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        """Agregar producto al carrito."""
+        from .serializers import CartAddItemSerializer
+        
+        if not request.user.is_authenticated:
+            return redirect('account:login')
+        
+        serializer = CartAddItemSerializer(
+            data=request.POST,
+            context={'request': request}
+        )
+        
+        if serializer.is_valid():
+            serializer.save()
+            return redirect('orders:cart')
+        
+        return redirect('products:product-list')
+
+
+class CartRemoveItemView(View):
+    """Quitar item del carrito."""
+    
+    @method_decorator(csrf_protect)
+    def post(self, request, item_id):
+        if not request.user.is_authenticated:
+            return redirect('account:login')
+        
+        try:
+            cart = Cart.objects.get(user=request.user)
+            item = cart.items.get(id=item_id)
+            item.delete()
+        except (Cart.DoesNotExist, CartItem.DoesNotExist):
+            pass
+        
+        return redirect('orders:cart')
+
+
+class ApplyCouponView(View):
+    """Aplicar cupón de descuento."""
+    
+    @method_decorator(csrf_protect)
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return redirect('account:login')
+        
+        code = request.POST.get('code', '').strip()
+        if code:
+            try:
+                coupon = Coupon.objects.get(code=code, is_active=True)
+                cart = Cart.objects.get(user=request.user)
+                
+                is_valid, message = coupon.is_valid(
+                    request.user,
+                    float(cart.subtotal) if cart.subtotal else 0
+                )
+                
+                if is_valid:
+                    cart.coupon = coupon
+                    cart.save()
+                else:
+                    request.session['coupon_error'] = message
+            except Coupon.DoesNotExist:
+                request.session['coupon_error'] = 'Cupón no válido'
+        
+        return redirect('orders:cart')
+
+
+class CheckoutProcessView(View):
+    """Procesa el checkout y redirige a Mercado Pago."""
+    
+    template_name = 'orders/checkout.html'
+    
+    @method_decorator(csrf_protect)
+    def post(self, request):
+        if not request.user.is_authenticated:
+            login_url = redirect('account:login')
+            login_url['Location'] += '?next=' + request.path
+            return login_url
+        
+        cart = Cart.objects.filter(user=request.user).first()
+        if not cart or cart.items.count() == 0:
+            messages.error(request, 'Tu carrito está vacío')
+            return redirect('orders:cart')
+        
+        email = request.POST.get('email', request.user.email)
+        
+        order = Order.objects.create(
+            buyer=request.user,
+            email=email,
+            phone=request.POST.get('phone', ''),
+            payment_method='mercadopago',
+            status=Order.Status.PENDING,
+            ip_address=self._get_client_ip(request),
+            user_agent=request.META.get('HTTP_USER_AGENT', '')[:500],
+        )
+        
+        for cart_item in cart.items.select_related('product', 'product__seller').all():
+            OrderItem.objects.create(
+                order=order,
+                product=cart_item.product,
+                product_name=cart_item.product.name,
+                product_slug=cart_item.product.slug,
+                product_image=cart_item.product.thumbnail.url if cart_item.product.thumbnail else '',
+                seller=cart_item.product.seller,
+                seller_name=cart_item.product.seller.get_display_name(),
+                license_type=cart_item.license_type,
+                unit_price=cart_item.price_at_add,
+                quantity=cart_item.quantity,
+                subtotal=cart_item.subtotal,
+            )
+        
+        mp_service = None
+        try:
+            from payments.mercadopago_service import MercadoPagoService
+            
+            items = []
+            for item in order.items.select_related('product').all():
+                items.append({
+                    "id": str(item.id)[:50],
+                    "title": item.product.name[:100],
+                    "quantity": item.quantity,
+                    "currency_id": order.currency,
+                    "unit_price": float(item.unit_price)
+                })
+            
+            payer = {
+                "name": request.user.first_name or '',
+                "surname": request.user.last_name or '',
+                "email": email,
+            }
+            
+            site_url = settings.SITE_URL.rstrip('/')
+            if not site_url.startswith(('http://', 'https://')):
+                site_url = 'https://' + site_url
+            
+            back_urls = {
+                "success": f"{site_url}/orders/mercadopago/success/{order.id}/",
+                "pending": f"{site_url}/orders/mercadopago/success/{order.id}/",
+                "failure": f"{site_url}/orders/checkout/",
+            }
+            
+            mp_service = MercadoPagoService()
+            result = mp_service.create_preference(
+                items=items,
+                payer=payer,
+                order=order,
+                back_urls=back_urls
+            )
+            
+            if result.get('success'):
+                init_point = result.get('sandbox_init_point') if mp_service.environment == 'sandbox' \
+                    else result.get('init_point')
+                
+                cart.items.all().delete()
+                
+                return redirect(init_point)
+            
+        except Exception as e:
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error creating Mercado Pago preference: {e}")
+        
+        messages.error(request, 'Error al procesar el pago. Intenta de nuevo.')
+        return redirect('orders:checkout')
+    
+    @staticmethod
+    def _get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            return x_forwarded_for.split(',')[0].strip()
+        return request.META.get('REMOTE_ADDR', '127.0.0.1')
 
 
 class CartViewSet(viewsets.ModelViewSet):

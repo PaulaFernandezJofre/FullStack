@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guía del Vendedor - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="guide-sidebar">
+                <h5 class="mb-3"><i class="bi bi-list text-neon-cyan me-2"></i>Contenido</h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="#registro">1. Registro como Vendedor</a>
+                    <a class="nav-link" href="#perfil">2. Completar Perfil</a>
+                    <a class="nav-link" href="#producto">3. Crear Producto</a>
+                    <a class="nav-link" href="#precio">4. Configurar Precios</a>
+                    <a class="nav-link" href="#ventas">5. Gestionar Ventas</a>
+                    <a class="nav-link" href="#retiros">6. Retiros</a>
+                </nav>
+                <hr class="my-3" style="border-color: rgba(255,255,255,0.1);">
+                <a href="{% url 'core:help' %}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Volver al Centro de Ayuda
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <div class="guide-content">
+                <h2 class="mb-4">
+                    <i class="bi bi-shop text-neon-lime me-2"></i>Guía del Vendedor
+                </h2>
+                <p class="lead text-muted mb-5">Aprende cómo vender tus productos en LogicPerfect y maximizar tus ganancias.</p>
+                
+                <section id="registro" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-person-plus text-neon-cyan me-2"></i>1. Registro como Vendedor</h4>
+                    <div class="guide-step">
+                        <p>Para convertirte en vendedor:</p>
+                        <ol class="guide-list">
+                            <li>Inicia sesión en tu cuenta</li>
+                            <li>Ve a <strong>Configuración → Tipo de Cuenta</strong></li>
+                            <li>Selecciona "Vendedor"</li>
+                            <li>Completa tu perfil de vendedor</li>
+                        </ol>
+                    </div>
+                </section>
+                
+                <section id="perfil" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-person-badge text-neon-cyan me-2"></i>2. Completar Perfil</h4>
+                    <div class="guide-step">
+                        <p>Un perfil completo aumenta la confianza de los compradores:</p>
+                        <ul class="guide-list">
+                            <li><strong>Foto de perfil:</strong> Usa una imagen profesional</li>
+                            <li><strong>Nombre/Nombre de empresa:</strong> Tu marca personal</li>
+                            <li><strong>Descripción:</strong> Cuéntales quién eres y qué ofreces</li>
+                            <li><strong>Cuenta de Mercado Pago:</strong> Vincula tu cuenta para recibir pagos</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <section id="producto" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-box-seam text-neon-cyan me-2"></i>3. Crear un Producto</h4>
+                    <div class="guide-step">
+                        <p>Pasos para publicar tu producto:</p>
+                        <ol class="guide-list">
+                            <li>Ve a <strong>Dashboard → Mis Productos → Nuevo Producto</strong></li>
+                            <li>Completa la información básica (nombre, categoría, descripción)</li>
+                            <li>Sube imágenes吸引entes de tu producto</li>
+                            <li>Agrega archivos o enlaces de descarga</li>
+                            <li>Configura precios y licencias</li>
+                            <li>Envía para revisión</li>
+                        </ol>
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Los productos son revisados en 24-48 horas hábiles.
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="precio" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-currency-dollar text-neon-cyan me-2"></i>4. Configurar Precios</h4>
+                    <div class="guide-step">
+                        <p>Ofrecemos dos tipos de licencias:</p>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 245, 255, 0.1);">
+                                    <h6><i class="bi bi-file-earmark text-neon-cyan me-2"></i>Licencia Regular</h6>
+                                    <p class="small text-muted mb-0">Uso personal o para un solo proyecto.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 255, 136, 0.1);">
+                                    <h6><i class="bi bi-stack text-neon-lime me-2"></i>Licencia Extendida</h6>
+                                    <p class="small text-muted mb-0">Uso comercial o múltiples proyectos.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="ventas" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-graph-up text-neon-cyan me-2"></i>5. Gestionar Ventas</h4>
+                    <div class="guide-step">
+                        <p>En tu dashboard puedes:</p>
+                        <ul class="guide-list">
+                            <li>Ver el historial de ventas</li>
+                            <li>Descargar reportes de ventas</li>
+                            <li>Ver las estadísticas de cada producto</li>
+                            <li>Recibir notificaciones de nuevas compras</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <section id="retiros" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-wallet2 text-neon-cyan me-2"></i>6. Retiros de Ganancias</h4>
+                    <div class="guide-step">
+                        <p>Para retirar tus ganancias:</p>
+                        <ol class="guide-list">
+                            <li>Ve a <strong>Dashboard → Retiros</strong></li>
+                            <li>Verifica que tengas el mínimo requerido ($50 USD)</li>
+                            <li>Solicita el retiro a tu cuenta de Mercado Pago</li>
+                            <li>Espera la aprobación (1-3 días hábiles)</li>
+                        </ol>
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            El retiro mínimo es de $50 USD.
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="mt-5 p-4 rounded text-center" style="background: rgba(0, 255, 136, 0.1); border: 1px solid rgba(0, 255, 136, 0.3);">
+                    <h5 class="mb-3"><i class="bi bi-question-circle text-neon-lime me-2"></i>¿Necesitas más ayuda?</h5>
+                    <p class="text-muted mb-3">Consulta las <a href="{% url 'core:faq' %}">Preguntas Frecuentes</a> o crea un ticket de soporte.</p>
+                    <a href="{% url 'support:create-ticket' %}" class="btn btn-neon-lime">
+                        <i class="bi bi-ticket me-2"></i>Crear Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.guide-sidebar {
+    background: rgba(10, 10, 15, 0.5);
+    border: 1px solid rgba(0, 245, 255, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 80px;
+}
+.guide-sidebar .nav-link {
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.guide-sidebar .nav-link:hover {
+    color: var(--neon-cyan);
+}
+.guide-content section {
+    scroll-margin-top: 100px;
+}
+.guide-step {
+    background: rgba(10, 10, 15, 0.3);
+    border-left: 3px solid var(--neon-cyan);
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+}
+.guide-list {
+    padding-left: 1.5rem;
+}
+.guide-list li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+</style>
+{% endblock %}

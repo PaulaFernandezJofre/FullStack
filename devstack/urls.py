@@ -15,10 +15,6 @@ from core.sitemaps import (
     CategorySitemap, 
     StaticViewSitemap
 )
-from core.views import (
-    HelpCenterView, ContactView, FAQView, 
-    TermsView, PrivacyView, LicensesView
-)
 
 sitemaps = {
     'products': ProductSitemap,
@@ -45,13 +41,8 @@ urlpatterns = [
     # Sellers
     path('seller/', include('products.urls')),
     
-    # Pages
-    path('help/', HelpCenterView.as_view(), name='help'),
-    path('contact/', ContactView.as_view(), name='contact'),
-    path('faq/', FAQView.as_view(), name='faq'),
-    path('terms/', TermsView.as_view(), name='terms'),
-    path('privacy/', PrivacyView.as_view(), name='privacy'),
-    path('licenses/', LicensesView.as_view(), name='licenses'),
+    # Core app pages
+    path('', include('core.urls')),
     
     # Apps principales
     path('api/v1/users/', include('users.urls')),

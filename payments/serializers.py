@@ -3,7 +3,7 @@ Serializers de Pagos
 """
 
 from rest_framework import serializers
-from .models import Payout, Transaction, SellerEarning, PlatformRevenue
+from .models import Payout, Transaction, SellerEarning
 
 
 class PayoutSerializer(serializers.ModelSerializer):

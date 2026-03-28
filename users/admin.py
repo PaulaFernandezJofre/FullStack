@@ -5,7 +5,6 @@ Admin de Usuarios - Panel completo con verificación y gestión
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.html import format_html
-from django.db.models import Count, Sum
 
 from .models import User, SellerStats, BuyerProfile
 
@@ -77,7 +76,8 @@ class UserAdmin(BaseUserAdmin):
         }
         color = colors.get(obj.status, '#6c757d')
         return format_html(
-            '<span style="background: {}; color: white; padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600;">{}</span>',
+            '<span style="background: {}; color: white; padding: 3px 8px; '
+            'border-radius: 12px; font-size: 11px; font-weight: 600;">{}</span>',
             color, obj.get_status_display()
         )
     status_badge.short_description = 'Estado'
@@ -116,11 +116,20 @@ class UserAdmin(BaseUserAdmin):
     
     def mercadopago_status(self, obj):
         if obj.mercadopago_verified:
-            return format_html('<span style="color: #3ddc84;"><i class="bi bi-check-circle-fill"></i> Verificado</span>')
+            return format_html(
+                '<span style="color: #3ddc84;">'
+                '<i class="bi bi-check-circle-fill"></i> Verificado</span>'
+            )
         elif obj.mercadopago_email:
-            return format_html('<span style="color: #ffc107;"><i class="bi bi-clock-fill"></i> Pendiente</span>')
+            return format_html(
+                '<span style="color: #ffc107;">'
+                '<i class="bi bi-clock-fill"></i> Pendiente</span>'
+            )
         else:
-            return format_html('<span style="color: #6c757d;"><i class="bi bi-dash-circle"></i> No configurado</span>')
+            return format_html(
+                '<span style="color: #6c757d;">'
+                '<i class="bi bi-dash-circle"></i> No configurado</span>'
+            )
     mercadopago_status.short_description = 'Mercado Pago'
     
     def full_name(self, obj):

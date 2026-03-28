@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guía del Comprador - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="guide-sidebar">
+                <h5 class="mb-3"><i class="bi bi-list text-neon-lime me-2"></i>Contenido</h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="#buscar">1. Buscar Productos</a>
+                    <a class="nav-link" href="#comprar">2. Realizar una Compra</a>
+                    <a class="nav-link" href="#pago">3. Métodos de Pago</a>
+                    <a class="nav-link" href="#descargar">4. Descargar Productos</a>
+                    <a class="nav-link" href="#soporte">5. Soporte</a>
+                </nav>
+                <hr class="my-3" style="border-color: rgba(255,255,255,0.1);">
+                <a href="{% url 'core:help' %}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Volver al Centro de Ayuda
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <div class="guide-content">
+                <h2 class="mb-4">
+                    <i class="bi bi-bag-check text-neon-lime me-2"></i>Guía del Comprador
+                </h2>
+                <p class="lead text-muted mb-5">Aprende cómo comprar y descargar productos en LogicPerfect.</p>
+                
+                <section id="buscar" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-search text-neon-cyan me-2"></i>1. Buscar Productos</h4>
+                    <div class="guide-step">
+                        <p>Encuentra el producto perfecto:</p>
+                        <ul class="guide-list">
+                            <li>Usa la barra de búsqueda en la página principal</li>
+                            <li>Filtra por <strong>categoría</strong>: Software, Templates, Cursos, Plugins, etc.</li>
+                            <li>Ordena por: Más vendidos, Precio, Fecha, Valoración</li>
+                            <li>Usa etiquetas para encontrar productos específicos</li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <section id="comprar" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-cart-plus text-neon-cyan me-2"></i>2. Realizar una Compra</h4>
+                    <div class="guide-step">
+                        <p>Pasos para comprar:</p>
+                        <ol class="guide-list">
+                            <li>Selecciona el producto que deseas comprar</li>
+                            <li>Elige el tipo de <strong>licencia</strong> (Regular o Extendida)</li>
+                            <li>Haz clic en "Comprar ahora"</li>
+                            <li>Completa la información de pago</li>
+                            <li>Recibirás un email de confirmación</li>
+                        </ol>
+                    </div>
+                </section>
+                
+                <section id="pago" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-credit-card text-neon-cyan me-2"></i>3. Métodos de Pago</h4>
+                    <div class="guide-step">
+                        <p>Aceptamos los siguientes métodos a través de Mercado Pago:</p>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 209, 255, 0.1);">
+                                    <h6><i class="bi bi-credit-card-2-front text-neon-cyan me-2"></i>Tarjeta de Crédito</h6>
+                                    <p class="small text-muted mb-0">Visa, Mastercard, American Express</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 255, 136, 0.1);">
+                                    <h6><i class="bi bi-credit-card text-neon-lime me-2"></i>Tarjeta de Débito</h6>
+                                    <p class="small text-muted mb-0">Visa Débito, Maestro, Mastercard Débito</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(255, 193, 7, 0.1);">
+                                    <h6><i class="bi bi-wallet2 text-neon-yellow me-2"></i>Saldo Mercado Pago</h6>
+                                    <p class="small text-muted mb-0">Paga con tu saldo de Mercado Pago</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(255, 105, 180, 0.1);">
+                                    <h6><i class="bi bi-building text-neon-pink me-2"></i>Pago en Efectivo</h6>
+                                    <p class="small text-muted mb-0">Boleto, Rapipago, Pago Fácil</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="descargar" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-download text-neon-cyan me-2"></i>4. Descargar Productos</h4>
+                    <div class="guide-step">
+                        <p>Después de tu compra:</p>
+                        <ol class="guide-list">
+                            <li>Ve a <strong>Mi Cuenta → Mis Compras</strong></li>
+                            <li>Encuentra el producto que compraste</li>
+                            <li>Haz clic en <strong>"Descargar"</strong></li>
+                            <li>Guarda el archivo en tu computadora</li>
+                        </ol>
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            Tienes hasta 5 descargas disponibles por producto.
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="soporte" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-question-circle text-neon-cyan me-2"></i>5. Soporte</h4>
+                    <div class="guide-step">
+                        <p>Si tienes problemas con tu compra:</p>
+                        <ul class="guide-list">
+                            <li>Contacta al vendedor directamente desde la página del producto</li>
+                            <li>Crea un ticket de soporte desde tu cuenta</li>
+                            <li>Revisa las <a href="{% url 'core:faq' %}">Preguntas Frecuentes</a></li>
+                        </ul>
+                    </div>
+                </section>
+                
+                <div class="mt-5 p-4 rounded text-center" style="background: rgba(0, 209, 255, 0.1); border: 1px solid rgba(0, 209, 255, 0.3);">
+                    <h5 class="mb-3"><i class="bi bi-question-circle text-neon-lime me-2"></i>¿Necesitas más ayuda?</h5>
+                    <p class="text-muted mb-3">Consulta las <a href="{% url 'core:faq' %}">Preguntas Frecuentes</a> o contacta al vendedor.</p>
+                    <a href="{% url 'support:create-ticket' %}" class="btn btn-neon-lime">
+                        <i class="bi bi-ticket me-2"></i>Crear Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.guide-sidebar {
+    background: rgba(10, 10, 15, 0.5);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 80px;
+}
+.guide-sidebar .nav-link {
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.guide-sidebar .nav-link:hover {
+    color: var(--neon-lime);
+}
+.guide-content section {
+    scroll-margin-top: 100px;
+}
+.guide-step {
+    background: rgba(10, 10, 15, 0.3);
+    border-left: 3px solid var(--neon-lime);
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+}
+.guide-list {
+    padding-left: 1.5rem;
+}
+.guide-list li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+</style>
+{% endblock %}

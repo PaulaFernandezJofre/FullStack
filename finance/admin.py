@@ -5,10 +5,6 @@ Dashboard financiero completo con distribución de pagos
 
 from django.contrib import admin
 from django.utils.html import format_html
-from django.db.models import Sum, Count, Avg
-from django.urls import path
-from django.shortcuts import render
-from django.db.models.functions import TruncDay, TruncMonth
 from django.utils import timezone
 
 from .models import (

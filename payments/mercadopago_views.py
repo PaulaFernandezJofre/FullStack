@@ -4,26 +4,24 @@ Incluye validación, rate limiting y protección contra ataques
 """
 
 from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.throttling import UserRateThrottle
 
-from orders.models import Order, OrderItem
+from orders.models import Order
 from .models import Transaction, SellerEarning, PlatformRevenue
 from .mercadopago_service import MercadoPagoService
 from .security import (
     WebhookSignatureVerifier,
     sanitize_payment_data,
     validate_payment_amount,
-    validate_currency,
     SecurePaymentLogger,
     IdempotencyHandler
 )
@@ -144,7 +142,8 @@ class MercadoPagoCheckoutView(APIView):
                 'total': float(order.total)
             })
             
-            init_point = result.get('sandbox_init_point') if mp_service.environment == 'sandbox' else result.get('init_point')
+            init_point = result.get('sandbox_init_point') if mp_service.environment == 'sandbox' \
+                else result.get('init_point')
             
             return Response({
                 'success': True,

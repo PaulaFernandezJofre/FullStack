@@ -3,7 +3,7 @@ Serializers de Analítica
 """
 
 from rest_framework import serializers
-from .models import DailyStats, ProductStats, CategoryStats
+from .models import DailyStats
 
 
 class DailyStatsSerializer(serializers.ModelSerializer):

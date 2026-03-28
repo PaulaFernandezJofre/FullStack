@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pagos y Retiros - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="guide-sidebar">
+                <h5 class="mb-3"><i class="bi bi-list text-neon-yellow me-2"></i>Contenido</h5>
+                <nav class="nav flex-column">
+                    <a class="nav-link" href="#comisiones">1. Comisiones</a>
+                    <a class="nav-link" href="#distribucion">2. Distribución</a>
+                    <a class="nav-link" href="#retiros">3. Retiros</a>
+                    <a class="nav-link" href="#tiempos">4. Tiempos</a>
+                </nav>
+                <hr class="my-3" style="border-color: rgba(255,255,255,0.1);">
+                <a href="{% url 'core:help' %}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-arrow-left me-1"></i>Volver al Centro de Ayuda
+                </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <div class="guide-content">
+                <h2 class="mb-4">
+                    <i class="bi bi-credit-card text-neon-yellow me-2"></i>Pagos y Retiros
+                </h2>
+                <p class="lead text-muted mb-5">Información sobre comisiones y cómo retirar tus ganancias.</p>
+                
+                <section id="comisiones" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-percent text-neon-cyan me-2"></i>1. Comisiones</h4>
+                    <div class="guide-step">
+                        <p>En LogicPerfect nos gusta ser transparentes con nuestras comisiones:</p>
+                        <table class="table table-dark table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Porcentaje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><i class="bi bi-person-check text-neon-lime me-2"></i>Vendedor recibe</td>
+                                    <td><strong class="text-neon-lime">64%</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-building text-neon-cyan me-2"></i>Plataforma</td>
+                                    <td>15%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-receipt text-neon-yellow me-2"></i>IVA (Chile)</td>
+                                    <td>19%</td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-credit-card-2-front text-neon-pink me-2"></i>Mercado Pago</td>
+                                    <td>~6%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                
+                <section id="distribucion" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-pie-chart text-neon-cyan me-2"></i>2. Ejemplo de Distribución</h4>
+                    <div class="guide-step">
+                        <p>Para una venta de <strong>$100.000 CLP</strong>:</p>
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded text-center" style="background: rgba(0, 255, 136, 0.15); border: 1px solid var(--neon-lime);">
+                                    <h4 class="text-neon-lime mb-1">$57.605</h4>
+                                    <small>Vendedor (64%)</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded text-center" style="background: rgba(0, 209, 255, 0.15); border: 1px solid var(--neon-cyan);">
+                                    <h4 class="text-neon-cyan mb-1">$13.500</h4>
+                                    <small>Plataforma (15%)</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded text-center" style="background: rgba(255, 193, 7, 0.15); border: 1px solid var(--neon-yellow);">
+                                    <h4 class="text-neon-yellow mb-1">$14.370</h4>
+                                    <small>IVA (19%)</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded text-center" style="background: rgba(255, 105, 180, 0.15); border: 1px solid var(--neon-pink);">
+                                    <h4 class="text-neon-pink mb-1">$4.525</h4>
+                                    <small>Mercado Pago (~6%)</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="retiros" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-wallet2 text-neon-cyan me-2"></i>3. Solicitar Retiros</h4>
+                    <div class="guide-step">
+                        <p>Para retirar tus ganancias:</p>
+                        <ol class="guide-list">
+                            <li>Ve a <strong>Dashboard → Retiros</strong></li>
+                            <li>Verifica que tengas el mínimo requerido: <strong>$50 USD</strong></li>
+                            <li>Haz clic en "Solicitar Retiro"</li>
+                            <li>Selecciona tu cuenta de Mercado Pago</li>
+                            <li>Confirma la solicitud</li>
+                        </ol>
+                        <div class="alert alert-warning mt-3">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            El retiro mínimo es de $50 USD. Las solicitudes menores no serán procesadas.
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="tiempos" class="mb-5">
+                    <h4 class="mb-3"><i class="bi bi-clock text-neon-cyan me-2"></i>4. Tiempos de Procesamiento</h4>
+                    <div class="guide-step">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 255, 136, 0.1);">
+                                    <h6><i class="bi bi-check-circle text-neon-lime me-2"></i>Retiro aprobado</h6>
+                                    <p class="small text-muted mb-0">1-3 días hábiles</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 rounded" style="background: rgba(0, 209, 255, 0.1);">
+                                    <h6><i class="bi bi-clock text-neon-cyan me-2"></i>Retiro en revisión</h6>
+                                    <p class="small text-muted mb-0">24-48 horas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <div class="mt-5 p-4 rounded text-center" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.3);">
+                    <h5 class="mb-3"><i class="bi bi-question-circle text-neon-yellow me-2"></i>¿Tienes dudas sobre pagos?</h5>
+                    <p class="text-muted mb-3">Consulta las <a href="{% url 'core:faq' %}">Preguntas Frecuentes</a> o contacta a soporte.</p>
+                    <a href="{% url 'support:create-ticket' %}" class="btn btn-neon-yellow">
+                        <i class="bi bi-ticket me-2"></i>Crear Ticket
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.guide-sidebar {
+    background: rgba(10, 10, 15, 0.5);
+    border: 1px solid rgba(255, 193, 7, 0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 80px;
+}
+.guide-sidebar .nav-link {
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.guide-sidebar .nav-link:hover {
+    color: var(--neon-yellow);
+}
+.guide-content section {
+    scroll-margin-top: 100px;
+}
+.guide-step {
+    background: rgba(10, 10, 15, 0.3);
+    border-left: 3px solid var(--neon-yellow);
+    padding: 1.5rem;
+    border-radius: 0 8px 8px 0;
+}
+.guide-list {
+    padding-left: 1.5rem;
+}
+.guide-list li {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+</style>
+{% endblock %}

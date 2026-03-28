@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from django.contrib import messages
-from django.conf import settings
 
 from .forms import UserRegistrationForm
 
@@ -86,10 +85,60 @@ class DashboardView(TemplateView):
                 context['seller_stats'] = user.seller_stats
                 context['total_earnings'] = float(user.seller_stats.total_earnings or 0)
                 context['pending_earnings'] = float(user.seller_stats.available_earnings or 0)
+                
+                from orders.models import OrderItem
+                from django.db.models import Sum
+                
+                completed_items = OrderItem.objects.filter(
+                    seller=user,
+                    order__status='completed'
+                ).aggregate(
+                    total_iva=Sum('iva_amount'),
+                    total_mp_fee=Sum('mercadopago_fee'),
+                    total_platform=Sum('platform_maintenance'),
+                    total_seller=Sum('seller_earnings'),
+                )
+                
+                context['financial_breakdown'] = {
+                    'iva_amount': float(completed_items['total_iva'] or 0),
+                    'mercadopago_fee': float(completed_items['total_mp_fee'] or 0),
+                    'platform_maintenance': float(completed_items['total_platform'] or 0),
+                    'seller_earnings': float(completed_items['total_seller'] or 0),
+                }
             except Exception:
                 context['seller_stats'] = None
                 context['total_earnings'] = 0
                 context['pending_earnings'] = 0
+                context['financial_breakdown'] = {
+                    'iva_amount': 0,
+                    'mercadopago_fee': 0,
+                    'platform_maintenance': 0,
+                    'seller_earnings': 0,
+                }
+        
+        if user.is_admin:
+            from orders.models import Order
+            from django.db.models import Sum
+            
+            completed_orders = Order.objects.filter(status='completed').aggregate(
+                total_iva=Sum('iva_amount'),
+                total_mp_fee=Sum('mercadopago_fee'),
+                total_platform=Sum('platform_maintenance'),
+                total_seller=Sum('seller_total'),
+                total_subtotal=Sum('subtotal'),
+            )
+            
+            context['admin_financial_stats'] = {
+                'total_iva': float(completed_orders['total_iva'] or 0),
+                'total_mp_fee': float(completed_orders['total_mp_fee'] or 0),
+                'total_platform': float(completed_orders['total_platform'] or 0),
+                'total_seller': float(completed_orders['total_seller'] or 0),
+                'total_subtotal': float(completed_orders['total_subtotal'] or 0),
+            }
+            
+            from users.models import User
+            context['total_users'] = User.objects.count()
+            context['active_sellers'] = User.objects.filter(role='seller', is_active=True).count()
         
         if user.is_buyer:
             try:
