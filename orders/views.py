@@ -6,11 +6,12 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import render, redirect
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 from django.conf import settings
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .models import Cart, CartItem, Order, OrderItem, ProductDownload, Coupon
 from .serializers import (
@@ -493,3 +494,80 @@ class CouponViewSet(viewsets.ReadOnlyModelViewSet):
                 'valid': False,
                 'error': 'Cupón no válido'
             })
+
+
+@staff_member_required
+def download_order_pdf(request, order_id):
+    """Descarga el PDF del receipt de una orden."""
+    try:
+        order = Order.objects.get(id=order_id)
+    except Order.DoesNotExist:
+        return HttpResponse('Orden no encontrada', status=404)
+    
+    from .pdf_generator import generate_order_pdf
+    
+    buyer = order.buyer
+    pdf_content = generate_order_pdf(order, buyer)
+    
+    response = HttpResponse(pdf_content, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="receipt_{order.order_number}.pdf"'
+    
+    return response
+
+
+def view_order_pdf(request, order_id):
+    """Vista el PDF del receipt de una orden (sin descarga automática)."""
+    try:
+        order = Order.objects.get(id=order_id)
+        if order.buyer != request.user and not request.user.is_staff:
+            return HttpResponse('No tienes permiso', status=403)
+    except Order.DoesNotExist:
+        return HttpResponse('Orden no encontrada', status=404)
+    
+    from .pdf_generator import generate_order_pdf
+    
+    buyer = order.buyer
+    pdf_content = generate_order_pdf(order, buyer)
+    
+    response = HttpResponse(pdf_content, content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="receipt_{order.order_number}.pdf"'
+    
+    return response
+
+
+class SellerReportPDFView(View):
+    """Genera reporte PDF de ventas para vendedores."""
+    
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return HttpResponse('No autenticado', status=401)
+        
+        if not hasattr(request.user, 'is_seller') or not request.user.is_seller:
+            return HttpResponse('No eres vendedor', status=403)
+        
+        from django.utils import timezone
+        from datetime import timedelta
+        from .pdf_generator import generate_seller_pdf
+        
+        days = int(request.GET.get('days', 30))
+        end_date = timezone.now()
+        start_date = end_date - timedelta(days=days)
+        
+        orders = Order.objects.filter(
+            items__seller=request.user,
+            status__in=['completed', 'paid'],
+            created_at__gte=start_date,
+            created_at__lte=end_date
+        ).distinct()
+        
+        pdf_content = generate_seller_pdf(
+            request.user,
+            start_date=start_date,
+            end_date=end_date,
+            orders=orders
+        )
+        
+        response = HttpResponse(pdf_content, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="reporte_ventas_{start_date.strftime("%Y%m%d")}_{end_date.strftime("%Y%m%d")}.pdf"'
+        
+        return response

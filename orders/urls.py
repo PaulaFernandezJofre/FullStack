@@ -21,6 +21,11 @@ urlpatterns = [
     path('cart/remove/<uuid:item_id>/', views.CartRemoveItemView.as_view(), name='cart-remove'),
     path('apply-coupon/', views.ApplyCouponView.as_view(), name='apply-coupon'),
     
+    # PDF Downloads
+    path('admin/order/<uuid:order_id>/pdf/', views.download_order_pdf, name='order-pdf-download'),
+    path('order/<uuid:order_id>/pdf/', views.view_order_pdf, name='order-pdf-view'),
+    path('seller/report/pdf/', views.SellerReportPDFView.as_view(), name='seller-report-pdf'),
+    
     # API
     path('', include(router.urls)),
 ]

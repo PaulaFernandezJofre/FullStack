@@ -3,6 +3,7 @@ Vistas de Pagos con Mercado Pago - Versión Segura
 Incluye validación, rate limiting y protección contra ataques
 """
 
+from decimal import Decimal
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseForbidden
@@ -20,10 +21,14 @@ from .models import Transaction, SellerEarning, PlatformRevenue
 from .mercadopago_service import MercadoPagoService
 from .security import (
     WebhookSignatureVerifier,
+    EnhancedWebhookVerifier,
     sanitize_payment_data,
     validate_payment_amount,
     SecurePaymentLogger,
-    IdempotencyHandler
+    IdempotencyHandler,
+    PaymentSecurityConfig,
+    CardDataValidator,
+    PaymentFraudDetector
 )
 import logging
 import json
@@ -187,9 +192,14 @@ def mercadopago_webhook(request):
             'topic': data.get('topic', data.get('type'))
         })
         
-        if not _verify_webhook_authenticity(request, payload):
-            logger.warning(f"Webhook rejected - invalid signature from IP: {client_ip}")
-            return HttpResponseForbidden('Firma inválida')
+        verification = EnhancedWebhookVerifier.verify_mercadopago_webhook(request)
+        
+        if verification['errors']:
+            logger.warning(f"Webhook rejected - errors: {verification['errors']} from IP: {client_ip}")
+            return HttpResponseForbidden('Solicitud rechazada')
+        
+        if verification['warnings']:
+            logger.warning(f"Webhook warnings: {verification['warnings']} from IP: {client_ip}")
         
         topic = data.get('topic') or data.get('type')
         
@@ -331,7 +341,7 @@ def process_successful_payment(order, payment_data):
         
         for item in order.items.select_related('product', 'product__seller').all():
             seller = item.product.seller
-            gross_amount = item.price * item.quantity
+            gross_amount = item.unit_price * item.quantity
             
             commission_rate = Decimal(str(settings.PLATFORM_COMMISSION_RATE))
             commission_amount = gross_amount * commission_rate
@@ -381,9 +391,6 @@ def process_successful_payment(order, payment_data):
     
     except Exception as e:
         logger.error(f"Error processing successful payment: {e}")
-
-
-from decimal import Decimal
 
 
 class MercadoPagoSuccessView(APIView):

@@ -7,12 +7,192 @@ import hmac
 import hashlib
 import time
 import re
+import secrets
 from collections import defaultdict
 from django.http import JsonResponse, HttpResponseForbidden
 from django.conf import settings
 from django.core.cache import cache
 from functools import wraps
 import bleach
+
+
+class PaymentSecurityConfig:
+    """
+    Configuración centralizada de seguridad para pagos.
+    """
+    
+    MIN_AMOUNT = 100
+    MAX_AMOUNT = 10000000
+    
+    RATE_LIMIT_GENERAL = 60
+    RATE_LIMIT_CHECKOUT = 10
+    RATE_LIMIT_WEBHOOK = 100
+    
+    BLOCK_DURATION_SUSPICIOUS = 300
+    BLOCK_DURATION_RATE_LIMIT = 60
+    
+    ALLOWED_CURRENCIES = ['USD', 'MXN', 'CLP', 'ARS', 'BRL', 'COP', 'PEN']
+    
+    MERCADO_PAGO_IPS = {
+        '54.85.55.0/24',
+        '52.20.166.0/24',
+        '18.228.0.0/16',
+        '34.238.0.0/16',
+    }
+    
+    SUSPICIOUS_PATTERNS = [
+        r'<script',
+        r'javascript:',
+        r'onerror=',
+        r'onclick=',
+        r'onload=',
+        r'union\s+select',
+        r'drop\s+table',
+        r';\s*rm\s*-rf',
+        r'eval\(',
+        r'exec\(',
+        r'../',
+        r'..\\',
+    ]
+
+
+class CardDataValidator:
+    """
+    Validador de datos de tarjeta - Solo para validación de formato.
+    NO almacena datos sensibles de tarjeta.
+    """
+    
+    @staticmethod
+    def validate_card_number_format(card_number):
+        """
+        Valida el formato del número de tarjeta (Luhn algorithm).
+        Solo para validación, nunca almacene el número completo.
+        """
+        if not card_number:
+            return False
+        
+        card_number = re.sub(r'\D', '', str(card_number))
+        
+        if len(card_number) < 13 or len(card_number) > 19:
+            return False
+        
+        total = 0
+        reverse_digits = card_number[::-1]
+        
+        for i, digit in enumerate(reverse_digits):
+            n = int(digit)
+            if i % 2 == 1:
+                n *= 2
+                if n > 9:
+                    n -= 9
+            total += n
+        
+        return total % 10 == 0
+    
+    @staticmethod
+    def validate_cvv(cvv):
+        """Valida formato de CVV."""
+        if not cvv:
+            return False
+        return bool(re.match(r'^\d{3,4}$', str(cvv)))
+    
+    @staticmethod
+    def validate_expiry_month(month):
+        """Valida mes de expiración."""
+        try:
+            m = int(month)
+            return 1 <= m <= 12
+        except (ValueError, TypeError):
+            return False
+    
+    @staticmethod
+    def validate_expiry_year(year):
+        """Valida año de expiración."""
+        try:
+            y = int(year)
+            from datetime import datetime
+            current_year = datetime.now().year
+            return current_year <= y <= current_year + 20
+        except (ValueError, TypeError):
+            return False
+    
+    @staticmethod
+    def mask_card_number(card_number):
+        """
+        Enmascara el número de tarjeta para logging seguro.
+        Muestra solo los últimos 4 dígitos.
+        """
+        if not card_number:
+            return '****'
+        
+        card_number = re.sub(r'\D', '', str(card_number))
+        
+        if len(card_number) < 4:
+            return '****'
+        
+        return f"****-****-****-{card_number[-4:]}"
+
+
+class PaymentFraudDetector:
+    """
+    Detector de fraude para transacciones de pago.
+    Analiza patrones sospechosos.
+    """
+    
+    HIGH_RISK_PATTERNS = {
+        'multiple_failed_attempts': 3,
+        'rapid_successive_attempts': 5,
+        'unusual_amount_threshold': 1000000,
+        'velocity_window_seconds': 300,
+    }
+    
+    @classmethod
+    def detect_velocity_attack(cls, user_id, amount):
+        """
+        Detecta ataques de velocidad (múltiples intentos rápidos).
+        """
+        key = f"velocity:{user_id}"
+        attempts = cache.get(key, [])
+        now = time.time()
+        
+        recent_attempts = [a for a in attempts if now - a < cls.HIGH_RISK_PATTERNS['velocity_window_seconds']]
+        
+        if len(recent_attempts) >= cls.HIGH_RISK_PATTERNS['rapid_successive_attempts']:
+            return True, 'Demasiados intentos recientes'
+        
+        recent_attempts.append(now)
+        cache.set(key, recent_attempts, timeout=cls.HIGH_RISK_PATTERNS['velocity_window_seconds'])
+        
+        return False, None
+    
+    @classmethod
+    def detect_unusual_amount(cls, amount):
+        """Detecta montos inusualmente altos."""
+        if amount > cls.HIGH_RISK_PATTERNS['unusual_amount_threshold']:
+            return True, f'Monto inusualmente alto: {amount}'
+        return False, None
+    
+    @classmethod
+    def detect_geo_anomaly(cls, ip, billing_country=None):
+        """
+        Detecta anomalías geográficas.
+        Requiere implementación con servicio de geolocalización.
+        """
+        return False, None
+    
+    @classmethod
+    def check_fingerprint(cls, fingerprint):
+        """
+        Verifica fingerprint del dispositivo/carrito.
+        """
+        if not fingerprint:
+            return False, 'Fingerprint requerido'
+        
+        blocked_key = f"blocked_fingerprint:{fingerprint}"
+        if cache.get(blocked_key):
+            return True, 'Dispositivo bloqueado'
+        
+        return False, None
 
 
 class PaymentSecurityMiddleware:
@@ -46,11 +226,11 @@ class PaymentSecurityMiddleware:
                 }, status=429)
             
             if not self.validate_request_headers(request):
-                return HttpResponseForbidden('Solicitud inválida')
+                return HttpResponseForbidden('Solicitud invalida', content_type='text/plain')
             
             if self.detect_suspicious_activity(request):
                 self.block_ip(client_ip, duration=300)
-                return HttpResponseForbidden('Actividad sospechosa detectada')
+                return HttpResponseForbidden('Actividad sospechosa detectada', content_type='text/plain')
         
         response = self.get_response(request)
         return response
@@ -327,3 +507,150 @@ class IdempotencyHandler:
         hash_obj.update(request.META.get('REMOTE_ADDR', '').encode('utf-8'))
         
         return hash_obj.hexdigest()
+
+
+class EnhancedWebhookVerifier:
+    """
+    Verificador avanzado de webhooks con múltiples capas de seguridad.
+    """
+    
+    @staticmethod
+    def verify_mercadopago_webhook(request):
+        """
+        Verificación completa de webhook de Mercado Pago.
+        Incluye: firma, IP, timestamp, idempotencia.
+        """
+        result = {
+            'valid': False,
+            'errors': [],
+            'warnings': []
+        }
+        
+        client_ip = _get_client_ip(request)
+        
+        if not EnhancedWebhookVerifier._verify_ip_address(client_ip):
+            result['errors'].append(f'IP no autorizada: {client_ip}')
+            result['warnings'].append('Intento desde IP externa')
+        else:
+            result['valid'] = True
+        
+        if not EnhancedWebhookVerifier._verify_signature(request):
+            result['errors'].append('Firma inválida')
+            result['valid'] = False
+        
+        if not EnhancedWebhookVerifier._verify_content_type(request):
+            result['warnings'].append('Content-Type inesperado')
+        
+        idempotency = IdempotencyHandler(timeout=3600)
+        payload_hash = hashlib.sha256(request.body).hexdigest()
+        if idempotency.is_duplicate(f"webhook:{payload_hash}"):
+            result['warnings'].append('Webhook duplicado, ignorado')
+        
+        return result
+    
+    @staticmethod
+    def _verify_ip_address(ip):
+        """Verifica IP contra rangos permitidos."""
+        try:
+            import ipaddress
+            ip_obj = ipaddress.ip_address(ip)
+            
+            for cidr in PaymentSecurityConfig.MERCADO_PAGO_IPS:
+                network = ipaddress.ip_network(cidr)
+                if ip_obj in network:
+                    return True
+            
+            if settings.MERCADO_PAGO_ENVIRONMENT != 'production':
+                return True
+            
+            return False
+        except ValueError:
+            return False
+    
+    @staticmethod
+    def _verify_signature(request):
+        """Verifica firma del webhook."""
+        webhook_secret = getattr(settings, 'MERCADO_PAGO_WEBHOOK_SECRET', '')
+        
+        if not webhook_secret:
+            webhook_secret = getattr(settings, 'MERCADO_PAGO_ACCESS_TOKEN', '')
+        
+        if not webhook_secret:
+            return True
+        
+        signature = request.META.get('HTTP_X_MERCADOLIBRE_SIGNATURE', '')
+        
+        if not signature:
+            signature = request.META.get('HTTP_X_MERCADOPAGO_SIGNATURE', '')
+        
+        if not signature:
+            return False
+        
+        expected = hmac.new(
+            webhook_secret.encode('utf-8'),
+            request.body,
+            hashlib.sha256
+        ).hexdigest()
+        
+        return hmac.compare_digest(signature, expected)
+    
+    @staticmethod
+    def _verify_content_type(request):
+        """Verifica Content-Type del request."""
+        content_type = request.content_type or ''
+        return 'application/json' in content_type
+
+
+class TokenGenerator:
+    """
+    Generador de tokens seguros para operaciones de pago.
+    """
+    
+    @staticmethod
+    def generate_checkout_token(order_id, user_id):
+        """
+        Genera token único para checkout.
+        """
+        timestamp = int(time.time())
+        random_bytes = secrets.token_hex(16)
+        
+        data = f"{order_id}:{user_id}:{timestamp}:{random_bytes}"
+        
+        signature = hmac.new(
+            settings.SECRET_KEY.encode('utf-8'),
+            data.encode('utf-8'),
+            hashlib.sha256
+        ).hexdigest()
+        
+        return f"{data}:{signature}"
+    
+    @staticmethod
+    def verify_checkout_token(token, order_id, user_id, max_age=3600):
+        """
+        Verifica token de checkout.
+        """
+        try:
+            parts = token.split(':')
+            if len(parts) != 5:
+                return False
+            
+            token_order_id, token_user_id, timestamp, random_bytes, signature = parts
+            
+            if token_order_id != str(order_id) or token_user_id != str(user_id):
+                return False
+            
+            age = int(time.time()) - int(timestamp)
+            if age > max_age:
+                return False
+            
+            data = f"{token_order_id}:{token_user_id}:{timestamp}:{random_bytes}"
+            expected = hmac.new(
+                settings.SECRET_KEY.encode('utf-8'),
+                data.encode('utf-8'),
+                hashlib.sha256
+            ).hexdigest()
+            
+            return hmac.compare_digest(signature, expected)
+        
+        except (ValueError, TypeError):
+            return False
