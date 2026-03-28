@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Crear Ticket de Soporte - LogicPerfect{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0" style="background: rgba(10, 10, 20, 0.8); border-radius: 16px;">
+                <div class="card-body p-5">
+                    <h2 class="mb-4 text-center">
+                        <i class="bi bi-ticket text-neon-cyan me-2"></i>
+                        Crear Ticket de Soporte
+                    </h2>
+                    
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label for="id_subject" class="form-label text-neon-cyan">Asunto</label>
+                            <input type="text" name="subject" id="id_subject" class="form-control bg-dark text-light border-secondary" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_description" class="form-label text-neon-cyan">Descripción</label>
+                            <textarea name="description" id="id_description" rows="5" class="form-control bg-dark text-light border-secondary" required></textarea>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_category" class="form-label text-neon-cyan">Categoría</label>
+                            <select name="category" id="id_category" class="form-select bg-dark text-light border-secondary">
+                                <option value="general">General</option>
+                                <option value="technical">Soporte Técnico</option>
+                                <option value="billing">Facturación y Pagos</option>
+                                <option value="account">Cuenta</option>
+                                <option value="product">Productos</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="id_priority" class="form-label text-neon-cyan">Prioridad</label>
+                            <select name="priority" id="id_priority" class="form-select bg-dark text-light border-secondary">
+                                <option value="low">Baja</option>
+                                <option value="medium">Media</option>
+                                <option value="high">Alta</option>
+                                <option value="urgent">Urgente</option>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-neon-cyan btn-lg">
+                                <i class="bi bi-send me-2"></i>Enviar Ticket
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div class="text-center mt-4">
+                        <a href="{% url 'core:help' %}" class="text-muted">
+                            <i class="bi bi-arrow-left me-1"></i>Volver al Centro de Ayuda
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

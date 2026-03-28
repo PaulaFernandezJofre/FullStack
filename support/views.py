@@ -2,6 +2,10 @@
 Vistas de Soporte
 """
 
+from django.views.generic import TemplateView, CreateView
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.utils import timezone
 from rest_framework import viewsets, status, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -114,3 +118,27 @@ class KnowledgeBaseViewSet(viewsets.ReadOnlyModelViewSet):
     
     def get_queryset(self):
         return KnowledgeBaseArticle.objects.filter(is_published=True)
+
+
+class SupportTicketCreateView(CreateView):
+    """Vista para crear tickets de soporte."""
+    
+    model = SupportTicket
+    template_name = 'support/create_ticket.html'
+    fields = ['subject', 'description', 'category', 'priority']
+    
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            messages.error(request, 'Debes iniciar sesión para crear un ticket.')
+            return redirect('account:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.status = SupportTicket.Status.OPEN
+        messages.success(self.request, 'Ticket creado exitosamente. Te responderemos pronto.')
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return '/account/dashboard/'
+

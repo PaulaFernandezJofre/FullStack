@@ -1,0 +1,218 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}Mercado Pago - Dashboard{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">LogicPerfect Admin</a> / Mercado Pago
+</h1>
+{% endblock %}
+
+{% block content %}
+<div class="p-4">
+    <h1 class="text-2xl font-bold mb-6">
+        <i class="bi bi-credit-card text-primary me-2"></i>
+        Dashboard de Mercado Pago
+    </h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="row g-4">
+        <!-- Estado de Conexión -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-plug me-2"></i>Estado de Conexión</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-dark table-borderless">
+                        <tr>
+                            <td><strong>Access Token:</strong></td>
+                            <td>
+                                {% if mp_config.access_token %}
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Configurado</span>
+                                    <br><small class="text-muted">{{ mp_config.access_token_masked }}</small>
+                                {% else %}
+                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>No configurado</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Public Key:</strong></td>
+                            <td>
+                                {% if mp_config.public_key %}
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Configurado</span>
+                                    <br><small class="text-muted">{{ mp_config.public_key_masked }}</small>
+                                {% else %}
+                                    <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>No configurado</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Entorno:</strong></td>
+                            <td>
+                                {% if mp_config.is_sandbox %}
+                                    <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split me-1"></i>Sandbox (Pruebas)</span>
+                                {% else %}
+                                    <span class="badge bg-success"><i class="bi bi-globe me-1"></i>Producción</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    {% if not mp_config.access_token or not mp_config.public_key %}
+                    <div class="alert alert-warning mt-3">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        <strong>Configura las credenciales en el archivo .env</strong>
+                        <ul class="mb-0 mt-2">
+                            <li><code>MERCADO_PAGO_ACCESS_TOKEN</code></li>
+                            <li><code>MERCADO_PAGO_PUBLIC_KEY</code></li>
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Configuración Chile -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-geo-alt me-2"></i>Configuración Regional</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-dark table-borderless">
+                        <tr>
+                            <td><strong>IVA Chile (19%):</strong></td>
+                            <td>
+                                {% if mp_config.chile_iva_enabled %}
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Activado</span>
+                                {% else %}
+                                    <span class="badge bg-secondary"><i class="bi bi-x-circle me-1"></i>Desactivado</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tasa IVA:</strong></td>
+                            <td>{{ mp_config.chile_iva_rate|floatformat:0 }}%</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-center">
+                                <small class="text-muted">El IVA se aplica automáticamente en transacciones desde Chile</small>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Distribución de Pagos -->
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Distribución de Pagos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="p-3 rounded text-center" style="background: rgba(0, 255, 136, 0.15); border: 1px solid #00FF88;">
+                                <h3 class="text-success mb-1">{{ distribution.seller_rate|floatformat:0 }}%</h3>
+                                <small>Vendedor</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 rounded text-center" style="background: rgba(0, 135, 255, 0.15); border: 1px solid #0087FF;">
+                                <h3 class="text-primary mb-1">{{ distribution.platform_rate|floatformat:0 }}%</h3>
+                                <small>Plataforma</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 rounded text-center" style="background: rgba(255, 193, 7, 0.15); border: 1px solid #FFC107;">
+                                <h3 class="text-warning mb-1">{{ distribution.iva_rate|floatformat:0 }}%</h3>
+                                <small>IVA Chile</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="p-3 rounded text-center" style="background: rgba(255, 105, 180, 0.15); border: 1px solid #FF69B4;">
+                                <h3 class"text-pink mb-1">{{ distribution.mercadopago_fee_rate|floatformat:1 }}%</h3>
+                                <small>Mercado Pago</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <h6>Ejemplo para $100.000 CLP:</h6>
+                    <div class="progress" style="height: 30px;">
+                        <div class="progress-bar bg-success" style="width: 64%;">$64.000 Vendedor</div>
+                        <div class="progress-bar bg-primary" style="width: 15%;">$15.000 Plataforma</div>
+                        <div class="progress-bar bg-warning text-dark" style="width: 19%;">$19.000 IVA</div>
+                        <div class="progress-bar" style="width: 6%; background: #FF69B4;">$6.000 MP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Acciones Rápidas -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Acciones Rápidas</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'admin:payments_transaction_changelist' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-list-ul me-2"></i>Ver Transacciones
+                        </a>
+                        <a href="{% url 'admin:payments_payout_changelist' %}" class="btn btn-outline-success">
+                            <i class="bi bi-cash-stack me-2"></i>Gestionar Retiros
+                        </a>
+                        <a href="{% url 'admin:orders_order_changelist' %}" class="btn btn-outline-info">
+                            <i class="bi bi-receipt me-2"></i>Ver Órdenes
+                        </a>
+                        <a href="{% url 'admin:finance_account_changelist' %}" class="btn btn-outline-warning">
+                            <i class="bi bi-bank me-2"></i>Cuentas Financieras
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enlaces Útiles -->
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-link-45deg me-2"></i>Enlaces Útiles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        <a href="https://www.mercadopago.com.mx/developers/panel" target="_blank" class="list-group-item list-group-item-action">
+                            <i class="bi bi-box-arrow-up-right me-2"></i>Panel de Mercado Pago
+                        </a>
+                        <a href="https://www.mercadopago.com.mx/developers/ES" target="_blank" class="list-group-item list-group-item-action">
+                            <i class="bi bi-book me-2"></i>Documentación API
+                        </a>
+                        <a href="https://www.mercadopago.com.mx/developers/panel/app" target="_blank" class="list-group-item list-group-item-action">
+                            <i class="bi bi-gear me-2"></i>Configurar Credenciales
+                        </a>
+                        <a href="https://www.mercadopago.com.mx/developers/panel/test_users" target="_blank" class="list-group-item list-group-item-action">
+                            <i class="bi bi-person-badge me-2"></i>Usuarios de Prueba
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4 text-center">
+        <a href="{% url 'admin:index' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Volver al Admin
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -30,7 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     # Account (login, signup)
-    path('account/', include('users.urls')),
+    path('account/', include(('users.urls', 'account'), namespace='account')),
     
     # Products
     path('products/', include('products.urls')),

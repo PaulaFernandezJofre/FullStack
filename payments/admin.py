@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django.urls import reverse
 from django.utils import timezone
+from django.conf import settings
 from .models import Payout, PayoutOrder, Transaction, SellerEarning, PlatformRevenue, PaymentMethod
 
 
@@ -299,3 +300,56 @@ class PaymentMethodAdmin(admin.ModelAdmin):
             color, obj.get_type_display()
         )
     type_badge.short_description = 'Tipo'
+
+
+class MercadoPagoConfigAdmin:
+    """
+    Clase helper para mostrar estado de Mercado Pago en el admin.
+    """
+    
+    def mercadopago_status(self, obj=None):
+        access_token = getattr(settings, 'MERCADO_PAGO_ACCESS_TOKEN', '')
+        environment = getattr(settings, 'MERCADO_PAGO_ENVIRONMENT', 'sandbox')
+        
+        if not access_token:
+            return format_html(
+                '<span style="background-color: #FF4444; color: white; padding: 4px 8px; '
+                'border-radius: 4px;">Desconectado</span>'
+            )
+        
+        env_badge = format_html(
+            '<span style="background-color: #FFA500; color: white; padding: 2px 6px; '
+            'border-radius: 3px; font-size: 10px;">Sandbox</span>' if environment == 'sandbox' else
+            '<span style="background-color: #00FF00; color: black; padding: 2px 6px; '
+            'border-radius: 3px; font-size: 10px;">Produccion</span>'
+        )
+        
+        token_short = f"{access_token[:8]}...{access_token[-4:]}" if len(access_token) > 12 else "***"
+        
+        return format_html(
+            '<div>'
+            '<span style="background-color: #00FF00; color: black; padding: 4px 8px; '
+            'border-radius: 4px;">Conectado</span>'
+            ' {} '
+            '<br><small style="color: #888;">Token: {}</small>'
+            '</div>',
+            env_badge, token_short
+        )
+    mercadopago_status.short_description = 'Mercado Pago'
+    
+    def mercadopago_distribution(self, obj=None):
+        iva = getattr(settings, 'IVA_RATE', 0.19) * 100
+        mp_fee = getattr(settings, 'MERCADO_PAGO_FEE_RATE', 0.0599) * 100
+        platform = getattr(settings, 'PLATFORM_MAINTENANCE_RATE', 0.15) * 100
+        seller = getattr(settings, 'SELLER_RATE', 0.64) * 100
+        
+        return format_html(
+            '<table style="font-size: 11px;">'
+            '<tr><td>Vendedor:</td><td><b style="color: #00FF00;">{}%</b></td></tr>'
+            '<tr><td>Plataforma:</td><td style="color: #0087FF;">{}%</td></tr>'
+            '<tr><td>IVA:</td><td style="color: #FFC107;">{}%</td></tr>'
+            '<tr><td>MP Fee:</td><td style="color: #FF69B4;">{}%</td></tr>'
+            '</table>',
+            f"{seller:.0f}", f"{platform:.0f}", f"{iva:.0f}", f"{mp_fee:.1f}"
+        )
+    mercadopago_distribution.short_description = 'Distribucion'

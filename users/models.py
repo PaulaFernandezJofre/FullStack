@@ -271,7 +271,6 @@ class BuyerProfile(models.Model):
     # Historial
     total_purchases = models.PositiveIntegerField(default=0)
     total_spent = models.DecimalField(max_digits=12, decimal_places=2, default=0)
-    favorite_products = models.ManyToManyField('products.Product', blank=True)
     
     # Notificaciones
     notify_new_products = models.BooleanField(default=True)
@@ -287,3 +286,239 @@ class BuyerProfile(models.Model):
     
     def __str__(self):
         return f"Perfil de {self.user.email}"
+
+
+class UserVerification(models.Model):
+    """
+    Modelo para verificación de identidad del usuario.
+    Incluye RUT, foto de rostro y foto del carnet de identidad.
+    """
+    
+    class VerificationStatus(models.TextChoices):
+        PENDING = 'pending', _('Pendiente')
+        IN_REVIEW = 'in_review', _('En revisión')
+        APPROVED = 'approved', _('Aprobado')
+        REJECTED = 'rejected', _('Rechazado')
+    
+    id = models.BigAutoField(primary_key=True)
+    
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name='verification'
+    )
+    
+    # Datos personales para verificación
+    rut = models.CharField(
+        _('RUT'),
+        max_length=20,
+        blank=True,
+        help_text='RUT sin puntos, con guión y dígito verificador. Ej: 12345678-5'
+    )
+    
+    first_name = models.CharField(
+        _('nombres'),
+        max_length=100,
+        blank=True
+    )
+    
+    last_name = models.CharField(
+        _('apellidos'),
+        max_length=100,
+        blank=True
+    )
+    
+    # Fotos para verificación
+    face_photo = models.ImageField(
+        _('foto de rostro'),
+        upload_to='verification/face/',
+        blank=True,
+        null=True,
+        help_text='Foto clara del rostro (selfie)'
+    )
+    
+    id_card_front = models.ImageField(
+        _('carnet - anverso'),
+        upload_to='verification/id/',
+        blank=True,
+        null=True,
+        help_text='Foto del anverso del carnet de identidad'
+    )
+    
+    id_card_back = models.ImageField(
+        _('carnet - reverso'),
+        upload_to='verification/id/',
+        blank=True,
+        null=True,
+        help_text='Foto del reverso del carnet de identidad'
+    )
+    
+    # Estado de verificación
+    status = models.CharField(
+        _('estado'),
+        max_length=20,
+        choices=VerificationStatus.choices,
+        default=VerificationStatus.PENDING
+    )
+    
+    # Campos de verificación individual
+    rut_verified = models.BooleanField(_('RUT verificado'), default=False)
+    name_verified = models.BooleanField(_('Nombre verificado'), default=False)
+    photo_verified = models.BooleanField(_('Foto verificada'), default=False)
+    
+    # Notas del administrador
+    admin_notes = models.TextField(_('notas del administrador'), blank=True)
+    rejection_reason = models.TextField(_('razón de rechazo'), blank=True)
+    
+    # Fechas
+    submitted_at = models.DateTimeField(blank=True, null=True)
+    reviewed_at = models.DateTimeField(blank=True, null=True)
+    verified_at = models.DateTimeField(blank=True, null=True)
+    
+    # Revisado por
+    reviewed_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='verifications_reviewed'
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'user_verifications'
+        verbose_name = _('verificación de usuario')
+        verbose_name_plural = _('verificaciones de usuarios')
+    
+    def __str__(self):
+        return f"Verificación de {self.user.email} - {self.get_status_display()}"
+    
+    @property
+    def is_fully_verified(self):
+        return (
+            self.status == self.VerificationStatus.APPROVED and
+            self.rut_verified and
+            self.name_verified and
+            self.photo_verified
+        )
+    
+    def approve(self, admin_user):
+        """Aprueba la verificación."""
+        from django.utils import timezone
+        self.status = self.VerificationStatus.APPROVED
+        self.rut_verified = True
+        self.name_verified = True
+        self.photo_verified = True
+        self.reviewed_at = timezone.now()
+        self.verified_at = timezone.now()
+        self.reviewed_by = admin_user
+        self.save()
+        
+        self.user.rut_verified = True
+        self.user.name_verified = True
+        self.user.first_name = self.first_name
+        self.user.last_name = self.last_name
+        self.user.account_verified = True
+        self.user.save()
+    
+    def reject(self, admin_user, reason):
+        """Rechaza la verificación."""
+        from django.utils import timezone
+        self.status = self.VerificationStatus.REJECTED
+        self.rejection_reason = reason
+        self.reviewed_at = timezone.now()
+        self.reviewed_by = admin_user
+        self.save()
+
+
+class UserCard(models.Model):
+    """
+    Modelo para tarjetas de usuario vinculadas a Mercado Pago.
+    """
+    
+    class CardType(models.TextChoices):
+        CREDIT = 'credit', _('Crédito')
+        DEBIT = 'debit', _('Débito')
+    
+    id = models.BigAutoField(primary_key=True)
+    
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='cards'
+    )
+    
+    # Datos de la tarjeta (enmascarados)
+    mercadopago_card_id = models.CharField(
+        _('ID de tarjeta MP'),
+        max_length=100,
+        blank=True
+    )
+    
+    mercadopago_customer_id = models.CharField(
+        _('ID de cliente MP'),
+        max_length=100,
+        blank=True
+    )
+    
+    last_four = models.CharField(
+        _('últimos 4 dígitos'),
+        max_length=4,
+        blank=True
+    )
+    
+    card_type = models.CharField(
+        _('tipo'),
+        max_length=10,
+        choices=CardType.choices,
+        default=CardType.CREDIT
+    )
+    
+    card_brand = models.CharField(
+        _('marca'),
+        max_length=50,
+        blank=True
+    )
+    
+    card_holder_name = models.CharField(
+        _('nombre del titular'),
+        max_length=100,
+        blank=True
+    )
+    
+    expiration_month = models.CharField(
+        _('mes de expiración'),
+        max_length=2,
+        blank=True
+    )
+    
+    expiration_year = models.CharField(
+        _('año de expiración'),
+        max_length=4,
+        blank=True
+    )
+    
+    is_default = models.BooleanField(_('tarjeta predeterminada'), default=False)
+    is_verified = models.BooleanField(_('verificada'), default=False)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'user_cards'
+        verbose_name = _('tarjeta')
+        verbose_name_plural = _('tarjetas')
+        ordering = ['-is_default', '-created_at']
+    
+    def __str__(self):
+        return f"{self.card_brand} ****{self.last_four} - {self.user.email}"
+    
+    @property
+    def masked_number(self):
+        return f"**** **** **** {self.last_four}"
+    
+    @property
+    def expiration(self):
+        return f"{self.expiration_month}/{self.expiration_year}"
